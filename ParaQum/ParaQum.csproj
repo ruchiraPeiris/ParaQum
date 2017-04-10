@@ -229,7 +229,6 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProjectManagementController.cs" />
     <Compile Include="Controllers\SendSRSController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UpdateController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
