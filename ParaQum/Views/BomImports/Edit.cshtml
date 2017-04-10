@@ -1,0 +1,106 @@
+﻿
+@model ParaQum.Models.BomImport
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">
+                    Edit BOM
+                </h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-bar-chart-o"></i> Create Order
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-eye-open"></span> View Order
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-edit"></span> Update Order
+                    </li>
+                    <li class="active">
+                        <span class="glyphicon glyphicon-edit"></span> Edit
+                    </li>
+                </ol>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.itemNo)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.customerRef, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.customerRef, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.customerRef, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.qty1, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.qty1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.qty1, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.qty10, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.qty10, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.qty10, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.mpn, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.mpn, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.mpn, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" class="btn btn-primary" value="Save" />
+                            </div>
+                        </div>
+
+                        <div>
+                            @if (ViewBag.message != null)
+                            {
+
+                                <h4>@ViewBag.message</h4>
+
+                            }
+
+
+                        </div>
+                    </div>
+                }
+
+                <div>
+                    <button class="btn btn-primary">  @Html.ActionLink("Process", "ABC", "OrderBom")</button>
+                    <br />
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

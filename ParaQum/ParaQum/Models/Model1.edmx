@@ -1,0 +1,511 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PQDataBookSQLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bom">
+          <Key>
+            <PropertyRef Name="BomId" />
+          </Key>
+          <Property Name="BomId" Type="int" Nullable="false" />
+          <Property Name="ExcelFile" Type="nvarchar" MaxLength="50" />
+          <Property Name="AddedBy" Type="nvarchar" MaxLength="255" />
+          <Property Name="State" Type="nvarchar" MaxLength="255" />
+          <Property Name="Project" Type="nvarchar" MaxLength="255" />
+          <Property Name="OrderId" Type="int" />
+          <Property Name="date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="BomImport">
+          <Key>
+            <PropertyRef Name="itemNo" />
+          </Key>
+          <Property Name="itemNo" Type="int" Nullable="false" />
+          <Property Name="customerRef" Type="nvarchar" MaxLength="255" />
+          <Property Name="qty1" Type="nvarchar" MaxLength="255" />
+          <Property Name="qty10" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="BomOrderTemp">
+          <Key>
+            <PropertyRef Name="ItemNo" />
+          </Key>
+          <Property Name="ItemNo" Type="int" Nullable="false" />
+          <Property Name="customerRef" Type="nvarchar" MaxLength="255" />
+          <Property Name="qty1" Type="nvarchar" MaxLength="255" />
+          <Property Name="qty10" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Component">
+          <Key>
+            <PropertyRef Name="Part Label" />
+          </Key>
+          <Property Name="Part Label" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Manufacturer Part Number" Type="nvarchar" MaxLength="255" />
+          <Property Name="Part Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Type" Type="nvarchar" MaxLength="255" />
+          <Property Name="Quantity" Type="nvarchar" MaxLength="255" />
+          <Property Name="Added Date" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="ComponentProject">
+          <Key>
+            <PropertyRef Name="Project Id" />
+            <PropertyRef Name="Component Id" />
+          </Key>
+          <Property Name="Project Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Component Id" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login_Details">
+          <Key>
+            <PropertyRef Name="Login Id" />
+          </Key>
+          <Property Name="Login Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User Id" Type="nvarchar" MaxLength="255" />
+          <Property Name="State" Type="nvarchar" MaxLength="255" />
+          <Property Name="Date_time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="Note Id" />
+          </Key>
+          <Property Name="Note Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Added Date" Type="nvarchar" MaxLength="255" />
+          <Property Name="Project Id" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Order Id" />
+          </Key>
+          <Property Name="Order Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Order Excel File" Type="nvarchar" MaxLength="255" />
+          <Property Name="date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Project Id" />
+          </Key>
+          <Property Name="Project Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Project Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Client Document" Type="nvarchar" MaxLength="255" />
+          <Property Name="Project Design" Type="nvarchar" MaxLength="255" />
+          <Property Name="Project Folder" Type="nvarchar" MaxLength="255" />
+          <Property Name="Date_time" Type="datetime" />
+          <Property Name="User Id" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User Id" />
+          </Key>
+          <Property Name="User Id" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="User Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+          <Property Name="Contact No" Type="nvarchar" MaxLength="255" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="Admin" Type="nvarchar" MaxLength="255" />
+          <Property Name="Engineer" Type="nvarchar" MaxLength="255" />
+          <Property Name="Inventory Manager" Type="int" />
+        </EntityType>
+        <EntityType Name="UserLogins">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="255" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="ComponentProject_FK00">
+          <End Role="Component" Type="Self.Component" Multiplicity="1" />
+          <End Role="ComponentProject" Type="Self.ComponentProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="Part Label" />
+            </Principal>
+            <Dependent Role="ComponentProject">
+              <PropertyRef Name="Component Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ComponentProject_FK01">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="ComponentProject" Type="Self.ComponentProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Project Id" />
+            </Principal>
+            <Dependent Role="ComponentProject">
+              <PropertyRef Name="Project Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Login_Details_FK00">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Login_Details" Type="Self.Login_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User Id" />
+            </Principal>
+            <Dependent Role="Login_Details">
+              <PropertyRef Name="User Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Note_FK00">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Project Id" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="Project Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PQDataBookSQLModelStoreContainer">
+          <EntitySet Name="Bom" EntityType="Self.Bom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BomImport" EntityType="Self.BomImport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BomOrderTemp" EntityType="Self.BomOrderTemp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Component" EntityType="Self.Component" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComponentProject" EntityType="Self.ComponentProject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login_Details" EntityType="Self.Login_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Note" EntityType="Self.Note" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="ComponentProject_FK00" Association="Self.ComponentProject_FK00">
+            <End Role="Component" EntitySet="Component" />
+            <End Role="ComponentProject" EntitySet="ComponentProject" />
+          </AssociationSet>
+          <AssociationSet Name="ComponentProject_FK01" Association="Self.ComponentProject_FK01">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ComponentProject" EntitySet="ComponentProject" />
+          </AssociationSet>
+          <AssociationSet Name="Login_Details_FK00" Association="Self.Login_Details_FK00">
+            <End Role="User" EntitySet="User" />
+            <End Role="Login_Details" EntitySet="Login_Details" />
+          </AssociationSet>
+          <AssociationSet Name="Note_FK00" Association="Self.Note_FK00">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PQDataBookSQLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bom">
+          <Key>
+            <PropertyRef Name="BomId" />
+          </Key>
+          <Property Name="BomId" Type="Int32" Nullable="false" />
+          <Property Name="ExcelFile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Project" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="BomImport">
+          <Key>
+            <PropertyRef Name="itemNo" />
+          </Key>
+          <Property Name="itemNo" Type="Int32" Nullable="false" />
+          <Property Name="customerRef" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="qty1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="qty10" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BomOrderTemp">
+          <Key>
+            <PropertyRef Name="ItemNo" />
+          </Key>
+          <Property Name="ItemNo" Type="Int32" Nullable="false" />
+          <Property Name="customerRef" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="qty1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="qty10" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Component">
+          <Key>
+            <PropertyRef Name="Part_Label" />
+          </Key>
+          <Property Name="Part_Label" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Manufacturer_Part_Number" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Part_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Added_Date" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Projects" Relationship="Self.ComponentProject" FromRole="Component" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Login_Details">
+          <Key>
+            <PropertyRef Name="Login_Id" />
+          </Key>
+          <Property Name="Login_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Date_time" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.Login_Details_FK00" FromRole="Login_Details" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="Note_Id" />
+          </Key>
+          <Property Name="Note_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Added_Date" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Project_Id" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Project" Relationship="Self.Note_FK00" FromRole="Note" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Order_Id" />
+          </Key>
+          <Property Name="Order_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Order_Excel_File" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Project_Id" />
+          </Key>
+          <Property Name="Project_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Project_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Client_Document" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Project_Design" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Project_Folder" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Date_time" Type="DateTime" Precision="3" />
+          <Property Name="User_Id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Notes" Relationship="Self.Note_FK00" FromRole="Project" ToRole="Note" />
+          <NavigationProperty Name="Components" Relationship="Self.ComponentProject" FromRole="Project" ToRole="Component" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="User_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Contact_No" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Admin" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Engineer" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Inventory_Manager" Type="Int32" />
+          <NavigationProperty Name="Login_Details" Relationship="Self.Login_Details_FK00" FromRole="User" ToRole="Login_Details" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="Login_Details_FK00">
+          <End Role="User" Type="Self.User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Login_Details" Type="Self.Login_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Login_Details">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Note_FK00">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Project_Id" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="Project_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ComponentProject">
+          <End Role="Component" Type="Self.Component" Multiplicity="*" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="PQDataBookSQLEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Boms" EntityType="Self.Bom" />
+          <EntitySet Name="BomImports" EntityType="Self.BomImport" />
+          <EntitySet Name="BomOrderTemps" EntityType="Self.BomOrderTemp" />
+          <EntitySet Name="Components" EntityType="Self.Component" />
+          <EntitySet Name="Login_Details" EntityType="Self.Login_Details" />
+          <EntitySet Name="Notes" EntityType="Self.Note" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogin" />
+          <AssociationSet Name="Login_Details_FK00" Association="Self.Login_Details_FK00">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Login_Details" EntitySet="Login_Details" />
+          </AssociationSet>
+          <AssociationSet Name="Note_FK00" Association="Self.Note_FK00">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Note" EntitySet="Notes" />
+          </AssociationSet>
+          <AssociationSet Name="ComponentProject" Association="Self.ComponentProject">
+            <End Role="Component" EntitySet="Components" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PQDataBookSQLModelStoreContainer" CdmEntityContainer="PQDataBookSQLEntities">
+          <EntitySetMapping Name="Boms">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.Bom">
+              <MappingFragment StoreEntitySet="Bom">
+                <ScalarProperty Name="BomId" ColumnName="BomId" />
+                <ScalarProperty Name="ExcelFile" ColumnName="ExcelFile" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BomImports">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.BomImport">
+              <MappingFragment StoreEntitySet="BomImport">
+                <ScalarProperty Name="itemNo" ColumnName="itemNo" />
+                <ScalarProperty Name="customerRef" ColumnName="customerRef" />
+                <ScalarProperty Name="qty1" ColumnName="qty1" />
+                <ScalarProperty Name="qty10" ColumnName="qty10" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BomOrderTemps">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.BomOrderTemp">
+              <MappingFragment StoreEntitySet="BomOrderTemp">
+                <ScalarProperty Name="ItemNo" ColumnName="ItemNo" />
+                <ScalarProperty Name="customerRef" ColumnName="customerRef" />
+                <ScalarProperty Name="qty1" ColumnName="qty1" />
+                <ScalarProperty Name="qty10" ColumnName="qty10" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Components">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.Component">
+              <MappingFragment StoreEntitySet="Component">
+                <ScalarProperty Name="Part_Label" ColumnName="Part Label" />
+                <ScalarProperty Name="Manufacturer_Part_Number" ColumnName="Manufacturer Part Number" />
+                <ScalarProperty Name="Part_Name" ColumnName="Part Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Added_Date" ColumnName="Added Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Login_Details">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.Login_Details">
+              <MappingFragment StoreEntitySet="Login_Details">
+                <ScalarProperty Name="Login_Id" ColumnName="Login Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User Id" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Date_time" ColumnName="Date_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notes">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.Note">
+              <MappingFragment StoreEntitySet="Note">
+                <ScalarProperty Name="Note_Id" ColumnName="Note Id" />
+                <ScalarProperty Name="Added_Date" ColumnName="Added Date" />
+                <ScalarProperty Name="Project_Id" ColumnName="Project Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="Order_Id" ColumnName="Order Id" />
+                <ScalarProperty Name="Order_Excel_File" ColumnName="Order Excel File" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="Project_Id" ColumnName="Project Id" />
+                <ScalarProperty Name="Project_Name" ColumnName="Project Name" />
+                <ScalarProperty Name="Client_Document" ColumnName="Client Document" />
+                <ScalarProperty Name="Project_Design" ColumnName="Project Design" />
+                <ScalarProperty Name="Project_Folder" ColumnName="Project Folder" />
+                <ScalarProperty Name="Date_time" ColumnName="Date_time" />
+                <ScalarProperty Name="User_Id" ColumnName="User Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="User_Id" ColumnName="User Id" />
+                <ScalarProperty Name="User_Name" ColumnName="User Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Contact_No" ColumnName="Contact No" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="Engineer" ColumnName="Engineer" />
+                <ScalarProperty Name="Inventory_Manager" ColumnName="Inventory Manager" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="PQDataBookSQLModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogins">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ComponentProject" TypeName="PQDataBookSQLModel.ComponentProject" StoreEntitySet="ComponentProject">
+            <EndProperty Name="Component">
+              <ScalarProperty Name="Part_Label" ColumnName="Component Id" />
+            </EndProperty>
+            <EndProperty Name="Project">
+              <ScalarProperty Name="Project_Id" ColumnName="Project Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

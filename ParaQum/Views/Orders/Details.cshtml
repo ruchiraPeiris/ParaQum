@@ -1,0 +1,47 @@
+﻿
+@model ParaQum.Models.Order
+
+@{
+    ViewBag.Title = "Bom details";
+}
+
+<h2>BOM Details</h2>
+
+<div>
+    <h4>Bom</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderExcelFile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderExcelFile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OrderId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+

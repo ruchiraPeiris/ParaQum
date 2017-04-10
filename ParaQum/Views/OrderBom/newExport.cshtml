@@ -1,0 +1,112 @@
+﻿@model ParaQum.Models.Order
+
+@{
+    ViewBag.Title = "Export to Excel";
+}
+
+<html>
+<head>
+    <title>Import excel file</title>
+    <script>
+        $(document).ready(function () {
+            $("#submit").on("click", function (e) {
+                alert("Test")
+            })
+        });
+
+    </script>
+    @if (null != TempData["Componenet"])
+    {
+        <script type="text/javascript">
+            alert("@TempData["Componenet"]");
+        </script>
+    }
+</head>
+<body>
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <br />
+                    <br />
+                    <h2 class="page-header">
+                        Download Final Order BOM
+                    </h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <span class="glyphicon glyphicon-home"></span>  Home
+                        </li>
+                        <li>
+                            <i class="fa fa-fw fa-bar-chart-o"></i> Create Order
+                        </li>
+                        <li>
+                            <span class="glyphicon glyphicon-eye-open"></span> View Order
+                        </li>
+                        <li>
+                            <span class="glyphicon glyphicon-edit"></span> Edit Order
+                        </li>
+                        <li class="active">
+                            <span class="glyphicon glyphicon-save"></span>  Download
+                        </li>
+                    </ol>
+                    <div class="form-horizontal">
+
+
+                    </div>
+
+                    <div class="form-horizontal">
+
+                        @using (Html.BeginForm("ExportToExcel", "OrderBom", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.OrderExcelFile, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.OrderExcelFile, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.OrderExcelFile, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <input type="submit" id="submit" value="Export To Excel" onclick="return confirm('Do you really want to make order excel') " />
+                                </div>
+                            </div>
+
+
+                        }
+
+
+                    </div>
+                    <div class="form-horizontal">
+                        <button class="btn btn-primary"> @Html.ActionLink("Roll Back", "Cancel", "OrderBom")</button>
+                    </div>
+                    <div class="form-horizontal">
+                        @using (Html.BeginForm("OrderConformation", "OrderBom", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <input type="file" name="file" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <input type="submit" id="submit" value="Export To Excel" onclick="return confirm('Do you confirm the order') " />
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+

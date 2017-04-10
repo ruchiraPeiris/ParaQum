@@ -1,0 +1,6 @@
+E:\3.4.2017\ParaQum\ParaQum\UpdateStock\bin\Debug\UpdateStock.dll
+E:\3.4.2017\ParaQum\ParaQum\UpdateStock\bin\Debug\UpdateStock.pdb
+E:\3.4.2017\ParaQum\ParaQum\UpdateStock\bin\Debug\GridMvc.dll
+E:\3.4.2017\ParaQum\ParaQum\UpdateStock\obj\Debug\ParaQum.DB.csprojResolveAssemblyReference.cache
+E:\3.4.2017\ParaQum\ParaQum\UpdateStock\obj\Debug\UpdateStock.dll
+E:\3.4.2017\ParaQum\ParaQum\UpdateStock\obj\Debug\UpdateStock.pdb

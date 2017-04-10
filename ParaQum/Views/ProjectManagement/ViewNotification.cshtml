@@ -1,0 +1,43 @@
+﻿@model ParaQum.Models.Alertdata
+@{
+    ViewBag.Title = "Read Notification";
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <br />
+            <br />
+            <div class="col-lg-12">
+               
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-folder-close"></span> Paraqum Projects
+                    </li>
+
+                    <li class="active">
+                        <span class="glyphicon glyphicon-eye-open"></span> View Message
+                    </li>
+                </ol>
+                <h5><b>FROM :</b> @Model.NotifUsersend</h5>
+                <h5><b>TO :</b> @Model.NotifUserRecive</h5>
+                <h5><b>DATE :</b> @Model.NotifDate</h5>
+                <hr />
+
+                <h4>Message Head</h4>
+                <p>@Model.NotifHead</p>
+                <hr />
+
+                <h4>Message Body</h4>
+                <p>@Model.NotifBody</p>
+                <hr />
+
+</div>
+</div>
+</div>
+</div>

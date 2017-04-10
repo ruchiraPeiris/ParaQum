@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "AssignNewProjects";
+    int ival1 = 0;
+    int ival2 = 0;
+    int ival3 = 0;
+}
+
+<!DOCTYPE html>
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+
+                <h2 class="page-header">
+                    Assign Members to Projects
+                </h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-folder-close"></span> Paraqum Projects
+                    </li>
+                 
+                    <li class="active">
+                        <span class="glyphicon glyphicon-arrow-right"></span> Asign Projects
+                    </li>
+                </ol>
+                <div class="row proBar" style="background-color: #001a66;">
+
+
+                    <div class="col-md-2" style="margin-left:35px;">
+                        <a href="@Url.Action("AsignProjectNameWindow", "ProjectManagement")"><img src="~/assets/members.png" border="0" style="width:100px;height:100px;" alt="Link to this page"></a>
+                    </div>
+                    <div class="col-md-2" style="margin-left:290px;">
+                        <a href="@Url.Action("AllNotoficationsWindow", "ProjectManagement")"><img src="~/assets/notifications.png" border="0" style="width:100px;height:100px;opacity:0.6;" alt="Link to this page"></a>
+                    </div>
+                    <div class="col-md-2" style="margin-left:280px;">
+                        <a href="@Url.Action("OpenNewProjectNameWindow", "ProjectManagement")"><img src="~/assets/filespng.png" border="0" style="width:100px;height:100px;opacity:0.6;" alt="Link to this page"></a>
+                    </div>
+                </div>
+
+                <div class="row proBar" style="background-color: #c1d0f0 ;">
+
+                    <div class="col-md-4" style="margin-left:15px;">
+                        <h4><b>Assign Members</b></h4>
+                    </div>
+                    <div class="col-md-2" style="margin-left:80px;">
+                        <h4><b>Send a Message</b></h4>
+                    </div>
+        
+                    <div class="col-md-2" style="margin-left:290px;">
+                        <h4><b>New Project</b>  </h4>
+                    </div>
+                </div><br />
+                <div class="row proBar">
+
+                    @model ParaQum.Models.UserData
+                    <div class="panel panel-danger">
+                        @using (Html.BeginForm("AsignProject", "ProjectManagement", FormMethod.Post))
+            {
+                            <div class="panel-body">
+                                <h2>Assign Projects</h2>
+                                <div class="btn-group col-md-4">
+                                    <p>Project Name</p>
+                                    <select class="form-control col-md-4" id="mnuprojects" name="mnuprojects" required>
+                                        @foreach (string item in Model.ProjectID)
+                                        {
+                                            <option value="@item">@Model.ProName[ival1].ToString()</option>
+
+                                            ival1 = ival1 + 1;
+                                        }
+                                    </select>
+
+
+                                </div>
+
+                                <div class="btn-group col-md-4">
+                                    <p>User Name</p>
+                                    <select class="form-control col-md-4" id="mnuusers" name="mnuusers" required>
+                                        @foreach (var se in Model.UserID)
+                                        {
+                                            if (Model.UserName[ival2].ToString() != Session["userName"].ToString())
+                                            {
+                                            <option value="@se">@Model.UserName[ival2].ToString()</option>
+                                            }
+                                            ival2 = ival2 + 1;
+                                        }
+                                    </select>
+
+
+                                </div>
+
+                                <button type="submit" style="margin-top:30px;" class="btn btn-primary">Assign</button>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+                <hr />
+
+                <h4>Project By Users</h4>
+
+                <table id="example" class="table">
+                    <thead>
+                        <tr><th>Project Name</th><th>User Name</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (string item2 in Model.AsignProject)
+            {
+                            <tr>
+                                <td>@item2</td>
+                                <td>@Model.AsignUser[ival3].ToString()</td>
+                            </tr>
+                            ival3 = ival3 + 1;
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>

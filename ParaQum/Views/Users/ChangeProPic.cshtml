@@ -1,0 +1,109 @@
+﻿
+
+@model ParaQum.Models.changePasswordModel
+@{  WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+
+    if (IsPost)
+    {
+        photo = WebImage.GetImageFromRequest();
+        if (photo != null)
+        {
+            newFileName = Path.GetFileName(photo.FileName);
+            string folderPath = Server.MapPath("/propic/" + Session["userID"]);
+
+            if (Directory.Exists(folderPath))
+            {
+                Array.ForEach(Directory.GetFiles(Server.MapPath("/propic/" + Session["userID"])), File.Delete);
+            }
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            imagePath = folderPath + "/" + newFileName;
+
+            var src = imagePath;
+            photo.Save(imagePath);
+        }
+    }
+
+
+
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">
+                    Change Profile Picture
+                </h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                    <li class="active">
+                        <span class="glyphicon glyphicon-camera"></span>  Change Profile Picture
+                    </li>
+                </ol>
+                <hr />
+                <div style="margin-left:500px;margin-top:60px">
+
+                    <h4>Change Profile Picture</h4>
+
+                    <img id="show" src="~/Content/images/facebook-profile-500x313.jpg" alt="" style="width:300px;height:300px;" />
+
+
+                    <form action="" method="post" enctype="multipart/form-data" id="proimage">
+                        <input type="file" name="file" accept="image/*" onchange="readURL(this);" />
+                        <br />
+
+
+                        <input type="submit" id="loadImage" class="btn btn-primary" value="Upload" />
+
+                    </form>
+
+                    <br />
+                    <br />
+
+
+
+
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                <script>
+
+
+
+
+
+                    function readURL(input) {
+
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+
+                                $('#show')
+                                    .attr('src', e.target.result)
+                                .width(300)
+                                   .height(300);
+
+
+                            };
+
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
+
+
+
+                </script>

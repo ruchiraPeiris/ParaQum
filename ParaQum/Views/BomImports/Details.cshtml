@@ -1,0 +1,63 @@
+﻿
+
+@model ParaQum.Models.BomImport
+
+@{
+    ViewBag.Title = "Bom details";
+}
+
+<h2>item Details</h2>
+
+<div>
+    <h4>Bom</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.itemNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.itemNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.customerRef)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.customerRef)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qty1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qty1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qty10)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qty10)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mpn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mpn)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.itemNo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

@@ -1,0 +1,58 @@
+﻿
+
+
+
+
+
+
+
+
+
+<a href="#" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Delete All</a>
+
+<div class="modal fade" id="myModal">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <a class="close btn" data-dismiss="modal">X</a>
+
+
+                <h3 class="modal-title">Confirm delete</h3>
+
+            </div>
+
+            <div class="modal-body">
+
+                @using (Html.BeginForm("DeleteAll", "SendSRS", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+
+                    <p>Are you sure you want to delete all requirement documents</p>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10" style="margin-left:500px">
+
+                            <input type="submit" value="Yes" class="btn btn-primary" />
+                        </div>
+                    </div>
+
+                }
+
+
+
+
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
+</div>

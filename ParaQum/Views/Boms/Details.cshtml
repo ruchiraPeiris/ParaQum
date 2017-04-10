@@ -1,0 +1,85 @@
+﻿
+@model ParaQum.Models.Bom
+
+@{
+    ViewBag.Title = "Bom details";
+}
+
+<h2>BOM Details</h2>
+
+<div>
+    <h4>Bom</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BomId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BomId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExcelFile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExcelFile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.BomId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

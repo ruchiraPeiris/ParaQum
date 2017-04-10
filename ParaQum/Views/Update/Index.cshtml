@@ -1,0 +1,88 @@
+﻿
+@model ParaQum.Models.UpdateComp
+@{
+    ViewBag.Title = "Index";
+}
+<html>
+<head>
+    <title>Import excel file</title>
+    <script>
+        $(document).ready(function () {
+            $("#submit").on("click", function (e) {
+                alert("Test")
+            })
+        });
+
+    </script>
+    @if (null != TempData["Comp"])
+    {
+        <script type="text/javascript">
+        alert("@TempData["Comp"]");
+        </script>
+    }
+</head>
+<body>
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-header">
+                        Update Stock
+                    </h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <span class="glyphicon glyphicon-home"></span>  Home
+                        </li>
+                        <li class="active">
+                            <span class="glyphicon glyphicon-edit"></span> Update Stock
+                        </li>
+                    </ol>
+                    <div class="form-horizontal">
+
+                        @using (Html.BeginForm("updating", "Update", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+
+                            <div class="form-group">
+                              
+                                @Html.Label("PQ Number", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.customerRef, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.customerRef, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Quantity", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.paraQumStock, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.paraQumStock, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            
+                            
+                            
+
+
+                            @Html.Raw(ViewBag.Error)
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <input class="btn btn-primary" type="submit" value="Update" onclick="return confirm('Do you want to update this component')"/>
+                                </div>
+                            </div>
+                          
+                        }
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
+
+
+
+
+

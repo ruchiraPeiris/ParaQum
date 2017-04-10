@@ -1,0 +1,290 @@
+﻿
+@{
+    string imagePath = Server.MapPath("/propic/" + Session["userID"]);
+
+    string src = "/Content/images/facebook-profile-500x313.jpg";
+    if (Directory.Exists(imagePath))
+    {
+        string pa = Server.MapPath("/propic/" + Session["userID"]);
+        DirectoryInfo di = new DirectoryInfo(pa);
+
+        string firstFileName =
+    di.GetFiles()
+    .Select(fi => fi.Name)
+    .FirstOrDefault(name => name != "Thumbs.db");
+
+
+        src = "/propic/" + Session["userID"] + "/" + firstFileName;
+
+    }
+
+
+}
+<title>@ViewBag.Title</title>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+
+
+    <link href="~/Content/DashboardTemplate/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="~/Content/DashboardTemplate/css/sb-admin.css" rel="stylesheet">
+    <link href="~/Content/table.css" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link href="~/Content/DashboardTemplate/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    @*<meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">*@
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+</head>
+<body style="background-color: #ffffff; padding: 0px;">
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#283E4A;" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+
+            @if (Session["userName"] == null)
+            {
+
+                { Response.Redirect("~/Home/LogIn"); }
+            }
+
+            @if (Session["type"].ToString() != "4")
+            {
+                <a class="navbar-brand" style="color: #ffffff;" href="@Url.Action("AdminDashboard", "ProjectManagement")"><span class="glyphicon glyphicon-home"></span> Home</a>
+            }
+
+            else
+            {
+                <a class="navbar-brand" style="color: #ffffff;" href="@Url.Action("otherdashboard", "ProjectManagement")"><span class="glyphicon glyphicon-home"></span> Home</a>
+
+
+            }
+
+            <ul class="nav navbar-right top-nav">
+                @if (Session["type"].ToString() != "4")
+                {
+                    <li>
+                        @*<div class="w3-dropdown-click">
+
+                            <div class="w3-dropdown-click">
+                                <button id="drop" onclick="myFunction1()" class="w3-button"><span class="glyphicon glyphicon-file"></span><b class="caret"></b></button>
+
+                                <div id="Demo1" class="w3-dropdown-content w3-bar-block w3-border">
+
+
+
+
+                                    <a href="@Url.Action("DownloadSrs", "SendSRS")" class="w3-bar-item ">SRS files</a>
+                                </div>
+                            </div>
+                            <span class="hi badge badge-notify">@Session["count"]</span>
+                        </div>*@
+                        <div class="w3-container">
+                            <div class="w3-dropdown-hover">
+                                <button id="drop" onclick="myFunction1()" class="w3-button"><span class="glyphicon glyphicon-file"></span><b class="caret"></b></button>
+                                <div class="w3-dropdown-content w3-bar-block w3-border">
+                                    <a href="@Url.Action("DownloadSrs", "SendSRS")" class="w3-bar-item ">SRS files</a>
+
+                                </div>
+                            </div>
+                            <span class="hi badge badge-notify">@Session["count"]</span>
+                        </div>
+
+                    </li>
+                }
+                <li>
+
+
+
+
+                </li>
+                <li>
+
+
+                    <div class="w3-container">
+                        <div class="w3-dropdown-hover">
+                            <button class="w3-button"><span class="glyphicon glyphicon-user"></span> @Session["userName"] <b class="caret"></b></button>
+                            <div class="w3-dropdown-content w3-bar-block w3-border">
+                                <a href="@Url.Action("Logout", "Home")" class="w3-bar-item "><span class="glyphicon glyphicon-off"></span> Log Out</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+
+            </ul>
+
+
+
+
+            @*<li><a class=" navbar-brand" style="color: #ffffff;"><span class="glyphicon glyphicon-user"></span> @Session["Username"] </a></li>
+
+                <li><a style="color: #ffffff;margin-right:10px;" href="@Url.Action("Logout", "Home")"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>*@
+
+
+            <!-- Top Menu Items -->
+            @*<select name="cars">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="fiat">Fiat</option>
+                    <option value="audi">Audi</option>
+                </select>*@
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse" >
+                <ul class="nav navbar-nav side-nav" id="side_nav">
+                    <li>
+                        <img src="~/Content/images/logo.png" style="width:150px;margin-left:30px;margin-top:10px;" class="navbar-left" />
+
+                    </li>
+
+
+                    <li class="profile-header-container profile-header-img">
+
+                        <img class="img-circle image " src=@src />
+
+                        <span> <a href="@Url.Action("ChangeProPic", "Users")" style="text-decoration:none;" class="glyphicon glyphicon-pencil text middle">change</a></span>
+                        <br />
+                    </li>
+
+                    @if (Session["type"].ToString() != "4")
+                    {
+
+                        <li>
+
+                            <a class="click" href="@Url.Action("Interface", "FetchData")" target="_blank" style="color: #ffffff;"><span class="glyphicon glyphicon-search"></span> Search Component</a>
+                            @*<a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>*@
+                        </li>
+
+                    }
+
+                    @if (Session["type"].ToString() == "1")
+                    {
+
+                        <li>
+                            <a class="click" style="color: #ffffff;" href="@Url.Action("Index", "Users")"><span class="glyphicon glyphicon-user"></span> Users </a>
+                        </li>
+
+
+
+                    }
+
+                    @if ((Session["type"].ToString() == "1") || (Session["type"].ToString() == "2"))
+                    {
+                        <li>
+                            <a class="click" style="color: #ffffff;" href="@Url.Action("Index", "BomImport")"><span class="glyphicon glyphicon-list-alt"></span> Import Bom</a>
+                        </li>
+
+                        <li>
+                            <a class="click" style="color: #ffffff;" href="@Url.Action("OpenNewProjectNameWindow", "ProjectManagement")"><span class="glyphicon glyphicon-folder-close"></span> Paraqum Projects</a>
+                        </li>
+                        <li>
+                            <a class="click" style="color: #ffffff;" href="@Url.Action("SearchProjectsWindow", "ProjectManagement")"><span class="glyphicon glyphicon-search"></span>Search Similar Projects</a>
+                        </li>
+                    }
+
+
+                    @if (Session["type"].ToString() == "3")
+                    {
+                        <li>
+                            <a class="click" style="color: #ffffff;" href="@Url.Action("Index", "OrderBom")"><i class="fa fa-fw fa-bar-chart-o"></i> Create Order</a>
+                        </li>
+                        <li>
+                            <a class="click" style="color: #ffffff;" href="@Url.Action("Index", "Update")"><i class="fa fa-fw fa-bar-chart-o"></i> Update paraQum Stock</a>
+                        </li>
+
+
+                    }
+                    <li>
+                        <a class="click" style="color: #ffffff;" href="@Url.Action("changePassword", "Users")"><span class="glyphicon glyphicon-wrench"></span> Profile Settings </a>
+                    </li>
+                    <li>
+                        <a class="click" style="color: #ffffff;" href="@Url.Action("AllNotoficationsWindow", "ProjectManagement")"><span class="glyphicon glyphicon-bell"></span> All Notifications</a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <!-- /.navbar-collapse -->
+        </nav>
+
+
+
+
+        @RenderBody()
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+    <style type="text/css">
+
+        .clicked {
+            background-color:black;
+
+        }
+
+
+    </style>
+    <script>
+        var count = 0;
+
+        $(function () {
+            $("#example").dataTable();
+        })
+
+        function myFunction1() {
+
+
+            var x = document.getElementById("Demo1");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+
+
+        }
+        function myFunction2() {
+            var x = document.getElementById("Demo2");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+
+
+        $(document).ready(function () {
+            $("#side_nav").children().click(function () {
+                $(this).toggleClass('clicked').siblings('div').removeClass('clicked');
+            });
+        });
+
+
+
+    </script>
+</body>
+
+</html>

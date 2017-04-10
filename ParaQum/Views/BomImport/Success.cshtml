@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ParaQum.Models.BomModel>
+@{
+    ViewBag.Title = "Success";
+}
+<html>
+<head>
+    <title>imported file</title>
+    @if (null != TempData["BomUpload"])
+    {
+        <script type="text/javascript">
+        alert("@TempData["BomUpload"]");
+        </script>
+    }
+</head>
+<body>
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-header">
+                        View BOM
+                    </h2>
+              
+                   
+                    <div class="scrollit">
+                        <table border="1">
+                            <tr>
+                                <th>Item</th>
+                                <th>Customer Reference</th>
+                                <th>Ref Designator</th>
+                                <th>QTY - 1 board</th>
+                                <th>QTY - 10 board</th>
+                                <th>Description</th>
+                                <th>Value</th>
+                                <th>Manufacture</th>
+                                <th>MPN</th>
+                                <th>VS NO</th>
+                                <th>VS_TD_Comments</th>
+                                <th>PAR Confirmation</th>
+                            </tr>
+                            @foreach (var b in ViewBag.ListProduct)
+            {
+                                <tr>
+                                    <td>@b.itemNo</td>
+                                    <td>@b.customerRef</td>
+                                    <td>@b.refDesignator</td>
+                                    <td>@b.qty1</td>
+                                    <td>@b.qty10</td>
+                                    <td>@b.description</td>
+                                    <td>@b.value</td>
+                                    <td>@b.manufacture</td>
+                                    <td>@b.mpn</td>
+                                    <td>@b.vsNo</td>
+                                    <td>@b.vs_TdComment</td>
+                                    <td>@b.parConfromation</td>
+
+
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+</div>
+                    <button class="btn btn-primary"> @Html.ActionLink("Back", "NewProject", "ProjectManagement")</button>
+
+</body>
+</html>
+
+

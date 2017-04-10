@@ -1,0 +1,60 @@
+﻿
+
+
+@model List<ParaQum.Models.ProjectData>
+<body>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                        Search Similar Projects by PQ Number
+                    </h3>
+                    <ol class="breadcrumb">
+                        <li>
+                            <span class="glyphicon glyphicon-home"></span>  Home
+                        </li>
+                        <li class="active">
+                            <span class="glyphicon glyphicon-search"></span> Search Similar Projects
+                        </li>
+                    </ol>
+
+                    @using (Html.BeginForm("SearchProjectsWindow", "ProjectManagement", FormMethod.Post))
+                    {
+                        @Html.TextBox("Key")
+                        <input type="submit" />
+                    }
+                    <br /><br />
+                    <table id="example" class="table">
+                        <thead>
+                            <tr><th>Project Name</th>     <th>#Edit</th></tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var se in Model)
+                            {
+                                <tr>
+                                    <td>@se.ProName</td>
+                                    <td>
+                                        @Html.ActionLink("Click To Edit",
+"NeWProjectWindow",   // <-- ActionMethod
+"ProjectManagement",  // <-- Controller Name.
+new { se.intProjectID }, // <-- Route arguments.
+                null  // <-- htmlArguments .. which are none. You need this value
+                      //     otherwise you call the WRONG method ...
+                      //     (refer to comments, below).
+                )
+                                    </td>
+
+
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                    </div>
+</div>
+</div>
+</div>
+</body>

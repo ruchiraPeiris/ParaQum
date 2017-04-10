@@ -1,0 +1,180 @@
+﻿@model ParaQum.Models.Login
+
+
+
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@{
+    Layout = "~/Views/Shared/_myTemplate.cshtml";
+}
+
+
+<body class="body">
+
+
+
+
+    <div class="login-wrap">
+
+
+        <div class="login-html">
+
+
+            <img class="main" alt="Logo" src="@Url.Content("~/Content/images/logo.png")" />
+            <br /><br />
+            <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab"></label>
+            <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
+            <div class="login-form">
+
+                @using (Html.BeginForm("Login", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+
+
+                    @Html.AntiForgeryToken()
+
+
+
+                    <form id="loginForm">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="sign-in-htm">
+                            <div class="group">
+                                <label for="user" class="lab">Username</label>
+                                @Html.EditorFor(a => a.userName, new { htmlAttributes = new { @class = "input" } })
+                                @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="group">
+                                <label for="pass" class="lab">Password</label>
+                                @Html.PasswordFor(a => a.password, new { @class = "input" })
+                                @Html.ValidationMessageFor(a => a.password, "", new { @class = "text-danger" })
+                            </div>
+                            @*<div class="group">
+                                    <input id="check" type="checkbox" class="check" checked>
+                                    <label for="check"><span class="icon"></span> Keep me Signed in</label>
+                                </div>*@
+                            <div class="group">
+                                <input type="submit" id="log" class="button" value="Sign In">
+                            </div>
+
+
+                    </form>
+                    <div class="hr"></div>
+                        @*<div class="foot-lnk">
+                                <a href="@Url.Action("ForgotPassword", "Users")">Forgot Password?</a>
+                            </div>*@
+                        @*</div>*@
+
+                }
+
+                @*@using (Html.BeginForm("SignUp", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                                            <div class="sign-up-htm">
+                                                <div class="group">
+                                                    <label for="user" class="label">User Name</label>
+                                                    @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "input" } })
+                                                    @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="group">
+                                                    <label for="user" class="label">Verification Code</label>
+                                                    @Html.EditorFor(model => model.verificationCode, new { htmlAttributes = new { @class = "input" } })
+                                                    @Html.ValidationMessageFor(model => model.verificationCode, "", new { @class = "text-danger" })
+                                                </div>
+
+                                                <div class="group">
+                                                    <label for="pass" class="label">Password</label>
+                                                    @Html.PasswordFor(model => model.password, new { @class = "input" })
+                                                    @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                                                </div>
+
+                                                <div class="group">
+                                                    <label for="pass" class="label">Repeat Password</label>
+                                                    @Html.PasswordFor(model => model.repeatPassword, new { @class = "input" })
+                                                    @Html.ValidationMessageFor(model => model.repeatPassword, "", new { @class = "text-danger" })
+                                                </div>
+
+                                                <div class="group">
+                                                    <input type="submit" class="button" value="Sign Up">
+                                                </div>
+
+
+                                            </div>
+
+
+                    }*@
+
+            </div>
+
+        </div>
+        @*</div>*@
+
+
+
+</body>
+
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+
+
+@if (null != TempData["conFailedMsg"])
+{
+    <script type="text/javascript">
+        alert("@TempData["conFailedMsg"]");
+    </script>
+}
+
+
+@if (null != TempData["passwordMismatch"])
+{
+    <script type="text/javascript">
+        alert("@TempData["passwordMismatch"]");
+    </script>
+}
+    @*<script>
+
+
+            $(function () {
+                $('#log').click(function () {
+
+
+                    var data=$("#loginForm").serialize();
+                    var Email = $("#userName").val();
+                    var Password = $("#password").val();
+
+
+                    if (Email == ""|| Email==undefined) {
+
+
+                        alert("Please enter User name")
+
+                        return false;
+
+                    }
+
+                    if (Password == ""|| Password==undefined) {
+
+
+                        alert("Please enter Password")
+
+                        return false;
+
+                    }
+                });
+            });
+
+        </script>*@
+
+    @if (null != TempData["loginError"])
+    {
+        <script type="text/javascript">
+            alert("@TempData["loginError"]");
+        </script>
+    }
+
+
+    @if (null != TempData["connection"])
+    {
+        <script type="text/javascript">
+            alert("@TempData["connection"]");
+        </script>
+    }

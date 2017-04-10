@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ParaQum.Models.BomModel>
+@{
+    ViewBag.Title = "Success";
+}
+<html>
+<head>
+    <title>imported file</title>
+</head>
+<body>
+    <h2>BOM</h2>
+    <table border="1">
+        <tr>
+            <th>Item</th>
+            <th>Customer Reference</th>
+            <th>Ref Designator</th>
+            <th>QTY - 1 board</th>
+            <th>QTY - 10 board</th>
+            <th>Description</th>
+            <th>Value</th>
+            <th>Manufacture</th>
+            <th>MPN</th>
+            <th>VS NO</th>
+            <th>VS_TD_Comments</th>
+            <th>PAR Confirmation</th>
+        </tr>
+        @foreach (var b in ViewBag.ListProduct)
+            {
+            <tr>
+                <td>@b.itemNo</td>
+                <td>@b.customerRef</td>
+                <td>@b.refDesignator</td>
+                <td>@b.qty1</td>
+                <td>@b.qty10</td>
+                <td>@b.description</td>
+                <td>@b.value</td>
+                <td>@b.manufacture</td>
+                <td>@b.mpn</td>
+                <td>@b.vsNo</td>
+                <td>@b.vs_TdComment</td>
+                <td>@b.parConfromation</td>
+
+
+            </tr>
+        }
+    </table>
+    @Html.ActionLink("process", "Index", "OrderBom");
+</body>
+</html>
+
+

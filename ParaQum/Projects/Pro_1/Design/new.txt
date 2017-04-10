@@ -1,0 +1,179 @@
+{
+            //updating required qty in componenet tables
+            //update order table
+            //exporting excel sheets
+            //deleting the bomimport table
+            try
+            {
+                var res = newdb.BomImports.SqlQuery("select [customerRef] from [BomImport]");
+                using (SqlConnection con = new SqlConnection(conStr))
+                {
+                    con.Open();
+                    string sqlCommand = "select * from [BomImport]";
+                    SqlCommand cmd2 = new SqlCommand(sqlCommand, con);
+                    SqlDataAdapter sqlAdapter = new SqlDataAdapter(cmd2);
+                    DataTable resultSet = new DataTable();
+                    sqlAdapter.Fill(resultSet);
+                    int rowCount = Convert.ToInt32(resultSet.Rows[0][0]);
+                    //var res = cmd2.ExecuteNonQuery().ToString();
+                    var num = resultSet.Select();
+
+
+
+                    OleDbConnection conn = OpenConnection();
+                    //conn.Open();
+                    int a, b;
+                    string s;
+
+                    //updating db
+                    for (int i = 0; i < num.Length; i++)
+                    {
+                        try
+                        {
+                            a = int.Parse(resultSet.Rows[i][1].ToString().Substring(2));
+                            b = Convert.ToInt32(resultSet.Rows[i][3]);
+                            s = resultSet.Rows[i][1].ToString();
+                            if (a <= 1000 && a > 0)
+                            {
+
+                            }
+                            else
+                            if (a > 1000 && a <= 2000)
+                            {
+
+                                string cmd1 = "select [ParaQum Stock] from [Capacitor_local] where [Part Label]='" + s + "'";
+                                OleDbCommand com2 = new OleDbCommand(cmd1, conn);
+                                com2.Parameters.AddWithValue("?", s);
+                                int paraQumStock = Convert.ToInt32(com2.ExecuteScalar());
+                                string newcmd1 = "select [RequiredQty] from [Capacitor_local] where [Part Label]='" + s + "'";
+                                OleDbCommand newcom2 = new OleDbCommand(newcmd1, conn);
+                                newcom2.Parameters.AddWithValue("?", s);
+                                int requiredQty = Convert.ToInt32(newcom2.ExecuteScalar());
+
+                                if (requiredQty == 0)
+                                {
+                                    if (paraQumStock - b > 0)
+                                        requiredQty = 0;
+                                    else
+                                        requiredQty = b - paraQumStock;
+                                }
+                                else
+                                {
+                                    requiredQty += b;
+                                }
+
+                                string cmd3 = "UPDATE [Capacitor_local] SET [RequiredQty] = @stock WHERE [Part Label] = @label";
+
+                                OleDbCommand com3 = new OleDbCommand(cmd3, conn);
+                                com3.Parameters.AddWithValue("@stock", requiredQty);
+                                com3.Parameters.AddWithValue("@label", s);
+                                com3.ExecuteNonQuery();
+
+                            }
+                            else if (a > 2000 && a <= 3000)
+                            {
+                                string cmd1 = "select ReqiredQty from Battery_local where [Part Label]='?'";
+                                OleDbCommand com2 = new OleDbCommand(cmd1, conn);
+                                com2.Parameters.AddWithValue("?", s);
+                                int stock = com2.ExecuteNonQuery();
+                                stock = b + stock;
+
+                                string cmd3 = "UPDATE[Battery_local] SET ReqiredQty = @stock WHERE PartLabel = @label";
+
+                                OleDbCommand com3 = new OleDbCommand(cmd3, conn);
+                                com3.Parameters.AddWithValue("@stock", stock);
+                                com3.Parameters.AddWithValue("@label", s);
+                                com3.ExecuteNonQuery();
+                            }
+                            else if (a > 3000 && a <= 4000)
+                            {
+                                string cmd1 = "select ReqiredQty from Capacitor_local where [Part Label]='?'";
+                                OleDbCommand com2 = new OleDbCommand(cmd1, conn);
+                                com2.Parameters.AddWithValue("?", s);
+                                int stock = com2.ExecuteNonQuery();
+                                stock = b + stock;
+
+                                string cmd3 = "UPDATE[IC_local] SET ReqiredQty = @stock WHERE PartLabel = @label";
+
+                                OleDbCommand com3 = new OleDbCommand(cmd3, conn);
+                                com3.Parameters.AddWithValue("@stock", stock);
+                                com3.Parameters.AddWithValue("@label", s);
+                                com3.ExecuteNonQuery();
+                            }
+                            else if (a > 4000 && a <= 5000)
+                            {
+                                string cmd1 = "select ReqiredQty from [IC_local] where [Part Label]='?'";
+                                OleDbCommand com2 = new OleDbCommand(cmd1, conn);
+                                com2.Parameters.AddWithValue("?", s);
+                                int stock = com2.ExecuteNonQuery();
+                                stock = b + stock;
+
+                                string cmd3 = "UPDATE[Circuit Protection_local]  SET ReqiredQty = @stock WHERE PartLabel = @label";
+
+                                OleDbCommand com3 = new OleDbCommand(cmd3, conn);
+                                com3.Parameters.AddWithValue("@stock", stock);
+                                com3.Parameters.AddWithValue("@label", s);
+                                com3.ExecuteNonQuery();
+                            }
+                            else if (a > 5000 && a <= 6000)
+                            {
+                                string cmd1 = "select ReqiredQty from Connector_local where [Part Label]='PQ1029'";
+                                OleDbCommand com2 = new OleDbCommand(cmd1, conn);
+                                com2.Parameters.AddWithValue("?", s);
+                                int stock = com2.ExecuteNonQuery();
+                                stock = b + stock;
+
+                                string cmd3 = "UPDATE[Connector_local] SET ReqiredQty = @stock WHERE PartLabel = @label";
+
+                                OleDbCommand com3 = new OleDbCommand(cmd3, conn);
+                                com3.Parameters.AddWithValue("@stock", stock);
+                                com3.Parameters.AddWithValue("@label", s);
+                                com3.ExecuteNonQuery();
+                            }
+                            else if (a > 7000 && a <= 8000)
+                            {
+                                string cmd1 = "select ReqiredQty from Diode_local where [Part Label]='?'";
+                                OleDbCommand com2 = new OleDbCommand(cmd1, conn);
+                                com2.Parameters.AddWithValue("?", s);
+                                int stock = com2.ExecuteNonQuery();
+                                stock = b + stock;
+
+                                string cmd3 = "UPDATE[Diode_local] SET ReqiredQty = @stock WHERE PartLabel = @label";
+
+                                OleDbCommand com3 = new OleDbCommand(cmd3, conn);
+                                com3.Parameters.AddWithValue("@stock", stock);
+                                com3.Parameters.AddWithValue("@label", s);
+                                com3.ExecuteNonQuery();
+                            }
+                            else if (a > 8000 && a <= 9000)
+                            {
+                                string cmd1 = "select [ParaQum Stock] from Filter_local where [Part Label]='?'";
+                                OleDbCommand com2 = new OleDbCommand(cmd1, conn);
+                                com2.Parameters.AddWithValue("?", s);
+                                int stock = com2.ExecuteNonQuery();
+                                stock = b + stock;
+
+                                string cmd3 = "UPDATE[Filter_local] SET ReqiredQty = @stock WHERE PartLabel = @label";
+
+                                OleDbCommand com3 = new OleDbCommand(cmd3, conn);
+                                com3.Parameters.AddWithValue("@stock", stock);
+                                com3.Parameters.AddWithValue("@label", s);
+                                com3.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            return View("ExportToExcel");
+
+        }

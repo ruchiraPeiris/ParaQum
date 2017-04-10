@@ -1,0 +1,175 @@
+﻿@model ParaQum.Models.userModel
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+
+
+
+
+
+<a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal">Register New User</a>
+
+
+@if (ViewBag.message != null)
+{
+
+    <h4>@ViewBag.message</h4>
+
+}
+
+
+
+<div class="modal fade" id="myModal">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <a class="close btn" data-dismiss="modal">X</a>
+
+
+                <h3 class="modal-title">Register New User</h3>
+
+            </div>
+
+            <div class="modal-body">
+
+                @using (Html.BeginForm("Create", "Users", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new {@class = "form-horizontal", role = "form" }))
+                {
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+
+
+
+                        @*<div class="form-group">
+                            @Html.Label("User ID", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.userId, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.userId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+
+                        <div class="form-group">
+                            @Html.Label("User Name", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Password", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.PasswordFor(model => model.password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="form-group">
+                            @Html.Label("E-mail", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Contact No", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.contactNo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.contactNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("IM", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.CheckBoxFor(model => model.inventoryManager, new { id = "checkbox", htmlAttributes = new { @class = "form-control", @id = "checkbox" } })
+                                @Html.ValidationMessageFor(model => model.inventoryManager, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Admin", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.CheckBoxFor(model => model.admin, new {id="checkbox", htmlAttributes = new { @class = "form-control", @id = "checkbox" } })
+                                @Html.ValidationMessageFor(model => model.admin, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Designer", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.CheckBoxFor(model => model.designer, new { id = "checkbox", htmlAttributes = new { @class = "form-control", @id = "checkbox" } })
+                                @Html.ValidationMessageFor(model => model.designer, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Other", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-4">
+                                @Html.CheckBoxFor(model => model.other, new { htmlAttributes = new { @class = "form-control",@id= "checkbox" } })
+                                @Html.ValidationMessageFor(model => model.other, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Submit" class="btn btn-primary" />
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                }
+
+
+
+
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<script>
+
+
+
+    $('#checkbox').click(function () {
+
+        $('#checkbox').attr('checked', false);
+        $(this).attr('checked', true);
+
+    })
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

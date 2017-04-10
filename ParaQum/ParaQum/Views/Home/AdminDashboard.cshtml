@@ -1,0 +1,157 @@
+﻿
+@{
+    ViewBag.Title = "AdminDashboard";
+}
+@{
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Home", "AdminDashboard", "Home")</li>
+
+            </ul>
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+</div>
+
+<h3>Admin's dashboard</h3><br /><br />
+<div class="row">
+
+    <div class="col-lg-4">
+        <input type="button" value="Create" onclick="location.href='@Url.Action("newProject","Project")'" />
+    </div>
+
+
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+
+                    <input type="text" class="form-control" placeholder="Search component">
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+            </span>
+        </div><!-- /.row -->
+    </div>
+
+</div><br />
+<div class="col-sm-3 col-md-3  col-lg-3">
+    <p></p>
+
+
+    <div class="list-group">
+        <a href="#" class="list-group-item active">
+            Options
+        </a>
+        <a href="#" class="list-group-item">New Project</a>
+        <a href="#" class="list-group-item">Add New Component</a>
+        <a href="#" class="list-group-item">Remove User</a>
+        <a href="#" class="list-group-item">Change User Privilege</a>
+
+    </div>
+
+</div>
+<div class="col-lg-4">
+
+    <div class="panel panel-danger">
+        <div class="panel-body">
+            <h2>Assign</h2>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    User ID <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">EN1</a></li>
+                    <li><a href="#">EN2</a></li>
+                    <li><a href="#">EN3</a></li>
+
+                </ul>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Project<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Project 1</a></li>
+                    <li><a href="#">Project 2</a></li>
+                    <li><a href="#">Project 3</a></li>
+
+                </ul>
+            </div>
+
+            <button type="button" class="btn btn-primary">OK</button>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="col-lg-4">
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Notifications
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-comment fa-fw"></i> New Comment
+                    <span class="pull-right text-muted small">
+                        <em>4 minutes ago</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-twitter fa-fw"></i> New Task
+                    <span class="pull-right text-muted small">
+                        <em>12 minutes ago</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-envelope fa-fw"></i> Messages
+                    <span class="pull-right text-muted small">
+                        <em>27 minutes ago</em>
+                    </span>
+                </a>
+
+
+
+
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
+                    <span class="pull-right text-muted small">
+                        <em>9:49 AM</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-money fa-fw"></i> Payment Received
+                    <span class="pull-right text-muted small">
+                        <em>Yesterday</em>
+                    </span>
+                </a>
+            </div>
+            <!-- /.list-group -->
+            <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+
+

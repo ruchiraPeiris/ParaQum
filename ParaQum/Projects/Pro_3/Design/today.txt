@@ -1,0 +1,42 @@
+<div class="well" style="background-color: #c3c3d5 ;">
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <img src="~/assets/clip.png" border="0" style="width:60px;height:60px;" alt="Link to this page" />      <h3>Add File to the Project:</h3>
+                            @using (Html.BeginForm("ImportBom", "BomImport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                                @Html.Hidden("projectId", Model.intProjectID)
+                                @Html.Hidden("projectName", Model.strProjectName)
+                                
+                                <br />
+                                <input type="file" name="excelfile" accept=".xlsx"/>
+                                <br />
+                                <input type="submit" name="Submit" id="Submit" value="Upload Bom" class="btn btn-warning"/>
+                                <br />
+                            }
+
+                        </div>
+
+                        <div class="col-lg-6">
+                            <h3>Project BOM File</h3>
+                            <br />
+                            <br />
+                            <table class="table">
+                                @foreach (string item in Model.ProjectFiles)
+            {
+
+                                    <tr>
+                                        <td>
+                                            @Html.ActionLink("Boms", "Index", "Boms");
+                                             @*<a target="_blank" href="@Model.ProjectFilesPath[0]@item">@item</a>*@
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>

@@ -1,0 +1,126 @@
+﻿
+@model IEnumerable<ParaQum.Models.userModel>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">
+                    Users
+                </h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                    <li class="active">
+                        <span class="glyphicon glyphicon-user"></span> Users
+                    </li>
+                </ol>
+                <div id="RenderCreate">
+                    @Html.Partial("Create", new ParaQum.Models.userModel())
+                </div>
+
+                @*<h4>Registered Users</h4>*@
+                <br />
+
+                <div class="panel panel-primary">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Registered Users</div>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.userId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.userName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.contactNo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.inventoryManager)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.admin)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.designer)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.other)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.userId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.userName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.contactNo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.inventoryManager)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.admin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.designer)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.other)
+                                </td>
+                                <td>
+
+
+
+
+
+                                    <a href="/Users/edit/@item.userId">Edit</a>
+                                    <a href="/Users/delete/@item.userId">Delete</a>
+                                <td />
+                            </tr>
+
+
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (null != TempData["createmsg"])
+{
+    <script type="text/javascript">
+       alert("@TempData["createmsg"]");
+    </script>
+}
+@if (null != TempData["checkBoxNullMsg"])
+{
+    <script type="text/javascript">
+       alert("@TempData["checkBoxNullMsg"]");
+    </script>
+}
+
+

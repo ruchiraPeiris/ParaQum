@@ -1,0 +1,268 @@
+﻿@model ParaQum.Models.ProjectViewModels
+
+
+
+@{
+    ViewBag.Title = "NewProject";
+    int ival = 0;
+}
+<script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+<script type="text/javascript">
+    tinymce.init({ selector: 'textarea', width: 500 });
+</script>
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">
+                    Your Project
+                </h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-folder-close"></span> Paraqum Projects
+                    </li>
+           
+                    <li class="active">
+                        <span class="glyphicon glyphicon-folder-close"></span>  Your project
+                    </li>
+                </ol>
+
+                <div class="row proBar" style="background-color:#001a66;">
+
+                    <div class="col-md-2" style="margin-left:35px;">
+                        <a href="@Url.Action("OpenNewProjectNameWindow", "ProjectManagement")"><img src="~/assets/filespng.png" border="0" style="width:100px;height:100px;" alt="Link to this page"></a>
+                    </div>
+                    <div class="col-md-2" style="margin-left:280px;">
+                        <a href="@Url.Action("AsignProjectNameWindow", "ProjectManagement")"><img src="~/assets/members.png" border="0" style="width:100px;height:100px;opacity:0.6;" alt="Link to this page"></a>
+                    </div>
+                    <div class="col-md-2" style="margin-left:295px;">
+                        <a href="@Url.Action("AllNotoficationsWindow", "ProjectManagement")"><img src="~/assets/notifications.png" border="0" style="width:100px;height:100px;opacity:0.6;" alt="Link to this page"></a>
+                    </div>
+                </div>
+
+                <div class="row proBar" style="background-color: #c1d0f0 ;">
+
+                    <div class="col-md-4" style="margin-left:5px;">
+                        <h4><b>Create New Project</b></h4>
+                    </div>
+                    <div class="col-md-2" style="margin-left:100px;">
+                        <h4> <b>Assign Users</b> </h4>
+                    </div>
+                    <div class="col-md-2" style="margin-left:280px;">
+                        <h4><b>Send a Message</b></h4>
+                    </div>
+
+                </div><br />
+                <h3>Project Name: @Html.Label(Model.strProjectName)</h3>
+                <hr />
+                <div class="well" style="background-color: #c3c3d5 ;">
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <img src="~/assets/clip.png" border="0" style="width:60px;height:60px;" alt="Link to this page" />      <h3>Add File to the Project:</h3>
+                            @using (Html.BeginForm("Upload", "ProjectManagement", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                                @Html.Hidden("projectId", Model.intProjectID)
+                                @Html.Hidden("projectName", Model.strProjectName)
+
+                                <br />
+                                <input type="file" name="file" />
+                                <br />
+                                <input type="submit" name="Submit" id="Submit" value="Upload" class="btn btn-warning" />
+                                <br />
+                            }
+
+                        </div>
+
+                        <div class="col-lg-6">
+                            <h3>Project Files</h3>
+                            <br />
+                            <br />
+                            <table class="table">
+                                @foreach (string item in Model.ProjectFiles)
+            {
+
+                                    <tr>
+                                        <td>
+                                            <a target="_blank" href="@Model.ProjectFilesPath[0]@item">@item</a>
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Delete",
+"DeleteProjetFile",   // <-- ActionMethod
+"ProjectManagement",  // <-- Controller Name.
+new { item, Model.intProjectID }, // <-- Route arguments.
+                null  // <-- htmlArguments .. which are none. You need this value
+                      //     otherwise you call the WRONG method ...
+                      //     (refer to comments, below).
+                )
+                                        </td>
+                                    </tr>
+
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="well" style="background-color: #c3c3d5 ;">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/assets/clip.png" border="0" style="width:60px;height:60px;" alt="Link to this page">             <h3>Add File to Project Cad Design:</h3>
+                            @using (Html.BeginForm("Upload1", "ProjectManagement", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                                @Html.Hidden("projectId", Model.intProjectID)
+                                @Html.Hidden("projectName", Model.strProjectName)
+
+                                <br />
+                                <input type="file" name="file" />
+                                <br />
+                                <input type="submit" name="Submit1" id="Submit1" value="Upload" class="btn btn-info" />
+                                <br />
+                            }
+
+                        </div>
+                        @using (Html.BeginForm("DeleteProjetCadFile", "ProjectManagement", FormMethod.Post))
+            {
+                            <div class="col-lg-6">
+                                <h3>Project Cad Design Files</h3>
+                                <br />
+                                <br />
+                                <table class="table">
+                                    @foreach (string item in Model.ProjectFilesCad)
+                                    {
+
+                                        <tr>
+                                            <td>
+                                                <a target="_blank" href="@Model.ProjectFilesPathCad[0]@item">@item</a>
+                                            </td>
+                                            <td>
+
+                                                @Html.ActionLink("Delete",
+"DeleteProjetCadFile",   // <-- ActionMethod
+"ProjectManagement",  // <-- Controller Name.
+new { item, Model.intProjectID }, // <-- Route arguments.
+     null  // <-- htmlArguments .. which are none. You need this value
+           //     otherwise you call the WRONG method ...
+           //     (refer to comments, below).
+     )
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </table>
+
+                            </div>
+                            <hr />
+                        }
+                    </div>
+                </div>
+                <div class="well" style="background-color: #c3c3d5 ;">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/assets/blackedit.png" border="0" style="width:60px;height:60px;" alt="Link to this page">         
+                         <h3>Add a New Note:</h3>
+                            @using (Html.BeginForm("SaveNote", "ProjectManagement", FormMethod.Post))
+                            {
+                                @Html.Hidden("projectId1", Model.intProjectID)
+                                @Html.Hidden("projectName1", Model.strProjectName)
+                                @Html.TextArea("notes", null, 15, 1000, new { @class = "form-control", @ValidateRequestMode = false })
+
+                                <button type="submit" class="btn btn-primary">ADD NOTE</button>
+                            }
+
+                        </div><br /><br />
+
+
+
+                        <div class="col-lg-6">
+                            <h3>Project Notes</h3>
+
+                            <div class="panel-group" id="accordion">
+
+                                @foreach (string item1 in Model.ProjectNotes)
+                                {
+                                    string noteid = Model.ProjectNotesID[ival];
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                              
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#@Model.ProjectNotesID[ival]">
+                                                    @Model.ProjectNotesID[ival] - @Model.ProjectNotesDate[ival]
+                                                </a>
+                                               
+                                            </h4>
+                                            <h4>
+                                                @Html.ActionLink("Delete",
+"DeleteProjetNote",   // <-- ActionMethod
+"ProjectManagement",  // <-- Controller Name.
+new { noteid, Model.intProjectID }, // <-- Route arguments.
+                null  // <-- htmlArguments .. which are none. You need this value
+                      //     otherwise you call the WRONG method ...
+                      //     (refer to comments, below).
+                )
+                                            </h4>
+                                        </div>
+                                        <div id="@Model.ProjectNotesID[ival]" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                @Html.Raw(item1)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ival = ival + 1;
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="well" style="background-color: #c3c3d5 ;">
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <img src="~/assets/clip.png" border="0" style="width:60px;height:60px;" alt="Link to this page" />      <h3>Add File to the Project:</h3>
+                            @using (Html.BeginForm("ImportBom", "BomImport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                                @Html.Hidden("projectId", Model.intProjectID)
+                                @Html.Hidden("projectName", Model.strProjectName)
+
+                                <br />
+                                <input type="file" name="excelfile" accept=".xlsx" />
+                                <br />
+                                <input type="submit" name="Submit" id="Submit" value="Upload Bom" class="btn btn-warning" />
+                                <br />
+                            }
+
+                        </div>
+
+                        <div class="col-lg-6">
+                            <h3>Project BOM File</h3>
+                            <br />
+                            <br />
+                            <table class="table">
+                                
+                                    <tr>
+                                        <td>
+                                           
+                                        </td>
+                                        <td>
+
+                                            @Html.ActionLink("BOM", "Index", "Boms")
+                                        </td>
+                                    </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

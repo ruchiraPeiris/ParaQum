@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<html>
+<head>
+    <title>Import excel file</title>
+</head>
+<body>
+    <h2>Index</h2>
+    @using (Html.BeginForm("selectFiles", "OrderBom", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+               
+
+
+        @Html.Raw(ViewBag.Error)
+        <input type="file" name="files" multiple/>
+        <input type="submit" value="Select"  />
+
+    }
+    
+    <div>
+        <p>
+            @Html.ActionLink("Export To Excel", "ExportToExcel1")
+        </p>
+    </div>
+</body>
+
+</html>
+
+
+

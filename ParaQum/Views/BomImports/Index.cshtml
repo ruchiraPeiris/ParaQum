@@ -1,0 +1,120 @@
+﻿
+
+
+@model IEnumerable<ParaQum.Models.BomImport>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">
+                    Update Order
+                </h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-bar-chart-o"></i> Create Order
+                    </li>
+                    <li >
+                        <span class="glyphicon glyphicon-eye-open"></span> View Order
+                    </li>
+                    <li class="active">
+                        <span class="glyphicon glyphicon-edit"></span> Edit Order
+                    </li>
+                </ol>
+
+                <br />
+                @*<div id="RenderCreate">
+                        @Html.Partial("Create", new ParaQum.Models.BomImport())
+                    </div>*@
+
+                @*<h4>BOM qty</h4>*@
+                <br />
+
+                <div class="panel panel-primary">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Item Details</div>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.itemNo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.customerRef)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.qty1)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.qty10)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.mpn)
+                            </th>
+
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.itemNo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.customerRef)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.qty1)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.qty10)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.mpn)
+                                </td>
+                                <td>
+
+
+
+
+
+                                    <a href="/BomImports/edit/@item.itemNo">Edit</a>
+                                    <a href="/BomImports/delete/@item.itemNo">Delete</a>
+                                <td />
+
+                            </tr>
+
+
+                        }
+
+                    </table>
+                </div>
+
+                <div>
+                    <button class="btn btn-primary">
+                        @Html.ActionLink("Give Final Order Name", "ABC", "OrderBom")
+                    </button>
+                </div>
+
+
+                @if (null != TempData["createmsg"])
+                {
+                    <script type="text/javascript">
+                        alert("@TempData["createmsg"]");
+                    </script>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>

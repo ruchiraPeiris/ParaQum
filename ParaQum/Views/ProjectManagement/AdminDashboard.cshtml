@@ -1,0 +1,98 @@
+﻿@model List<ParaQum.Models.DashboardData>
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+
+
+
+
+
+<link rel="stylesheet" href="@Url.Content("~/Content/style_SRS.css")">
+
+
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">
+                    Home
+                </h2>
+                <ol class="breadcrumb">
+                    <li class="active">
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+
+                </ol>
+
+                <div class="row">
+                    <div class="col-lg-6">
+
+
+
+
+                        <div class="list-group">
+                            <a href="#" class="list-group-item active">
+                                Requirement Documents
+                            </a>
+
+
+
+                            @foreach (var r in Model)
+
+                            {
+                                if (r.SrsTitle != null && r.SrsSendDate != null)
+                                {
+                                    <a href="@Url.Action("DownloadSrs", "SendSRS", new { r.SrsTitle })" class="list-group-item"><small>@r.SrsTitle</small> <small>from</small> <small>@r.sender</small><small class="pull-right">@r.SrsSendDate</small></a>
+                                }
+                            }
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+
+
+
+
+
+
+
+                        <div class="list-group">
+                            <a href="#" class="list-group-item active">
+                                New Notification Aletrs
+                            </a>
+
+                            @foreach (var PD in Model)
+                            {
+
+                                if (PD.NotifHead != null && PD.NotifDate != null)
+                                {
+                                    <a href="ViewAlertInbox?item=@PD.NotifID" class="list-group-item">@PD.NotifHead<small class=" pull-right">@PD.NotifDate</small></a>
+                                }
+                            }
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+@if (null != TempData["srsDeleteMsg"])
+{
+    <script type="text/javascript">
+                        alert("@TempData["srsDeleteMsg"]");
+    </script>
+}
+

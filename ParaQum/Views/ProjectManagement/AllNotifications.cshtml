@@ -1,0 +1,128 @@
+﻿@model ParaQum.Models.NotificationData
+@{
+    ViewBag.Title = "All Notifications";
+    int ival1 = 0;
+    int ival2 = 0;
+    int ival3 = 0;
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">
+                    All Notifications
+                </h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                    <li class="active">
+                        <span class="glyphicon glyphicon-bell"></span> All Notifications
+                    </li>
+                </ol>
+
+
+@if ((Session["type"].ToString() == "1") || (Session["type"].ToString() == "2"))
+{
+
+                <div class="row proBar" style="background-color: #001a66;">
+                    <div class="col-md-2" style="margin-left:35px;">
+                        <a href="@Url.Action("AllNotoficationsWindow", "ProjectManagement")"><img src="~/assets/notifications.png" border="0" style="width:100px;height:100px;"  alt="Link to this page"></a>
+                    </div>
+                    <div class="col-md-2" style="margin-left:290px;">
+                        <a href="@Url.Action("OpenNewProjectNameWindow", "ProjectManagement")"><img src="~/assets/filespng.png" border="0" style="width:100px;height:100px;opacity:0.6;"alt="Link to this page"></a>
+                    </div>
+                    <div class="col-md-2 " style="margin-left:280px;">
+                        <a href="@Url.Action("AsignProjectNameWindow", "ProjectManagement")"><img src="~/assets/members.png" border="0" style="width:100px;height:100px;opacity:0.6;"  alt="Link to this page"></a>
+                    </div>
+
+                </div>
+                <div class="row proBar" style="background-color: #c1d0f0 ;">
+                    <div class="col-md-4" style="margin-left:15px;">
+                        <h4><b>Send a Message</b></h4>
+                    </div>
+                    <div class="col-md-4" style="margin-left:80px;">
+                        <h4><b>Create New Project</b> </h4>
+                    </div>
+                    <div class="col-md-2" style="margin-left:70px;">
+                        <h4><b>Assign Members</b> </h4>
+                    </div>
+                </div>
+                <br /><br />
+
+}
+
+
+                <ul class="nav nav-tabs" style="background-color: #c1d0f0 ;">
+                    <li class="active"><a data-toggle="tab" href="#inbox"><b>Inbox</b></a></li>
+                    <li><a data-toggle="tab" href="#outbox"><b>Outbox</b></a></li>
+                    <li><a data-toggle="tab" href="#new"><b>Compose New Notification</b></a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="inbox" class="tab-pane fade in active">
+                        @foreach (string item in Model.InNotID)
+            {
+                            <hr /><h4>
+                                @Html.ActionLink(Model.InNotName[ival1],
+    "ViewAlertInbox",   // <-- ActionMethod
+    "ProjectManagement",  // <-- Controller Name.
+    new { item }, // <-- Route arguments.
+                    null  // <-- htmlArguments .. which are none. You need this value
+                          //     otherwise you call the WRONG method ...
+                          //     (refer to comments, below).
+                    )
+                            </h4>
+                            <p><b>Send Date:</b>@Model.InNotDate[ival1]   <b>Send By:</b>@Model.InNotSendto[ival1]   <b>View:</b>@Model.InNotRead[ival1] </p>
+                            ival1 = ival1 + 1;
+                        }
+                    </div>
+                    <div id="outbox" class="tab-pane fade">
+                        @foreach (string item in Model.OutNotID)
+            {
+                            <hr /><h4>
+                                @Html.ActionLink(Model.OutNotName[ival2],
+"ViewAlertInbox",   // <-- ActionMethod
+"ProjectManagement",  // <-- Controller Name.
+new { item }, // <-- Route arguments.
+                null  // <-- htmlArguments .. which are none. You need this value
+                      //     otherwise you call the WRONG method ...
+                      //     (refer to comments, below).
+                )
+                            </h4>
+                            <p><b>Send Date:</b>@Model.OutNotDate[ival2]   <b>Send To:</b>@Model.OutNotSendby[ival2]</p>
+                            ival2 = ival2 + 1;
+                        }
+                    </div>
+                    <div id="new" class="tab-pane fade">
+                        @using (Html.BeginForm("SentMessage", "ProjectManagement", FormMethod.Post))
+            {
+                            <p>Select User</p>
+                            <select class="form-control" id="mnuusers" name="mnuusers" required>
+                                @foreach (var se in Model.UserID)
+                {
+                                    <option value="@se">@Model.UserName[ival3].ToString()</option>
+                                    ival3 = ival3 + 1;
+                                }
+                            </select>
+                            <br />
+                            <p>Message Head</p>
+                            <input type="text" name="msghead" id="msghead" class="form-control" required><br>
+                            <p>Message Body</p>
+                            @Html.TextArea("msgbody", null, 15, 1000, new { @class = "form-control", @ValidateRequestMode = false })
+
+                            <br />
+                            <button type="submit" class="btn btn-primary">SEND ALERT</button>
+
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

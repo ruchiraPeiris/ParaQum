@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "OtherDashboard";
+}
+
+
+<title>Login Form</title>
+
+
+
+<link rel="stylesheet" href="@Url.Content("~/Content/style_SRS.css")">
+
+
+
+
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+
+
+ <div class="nav navbar-nav navbar-right">
+    @Html.ActionLink("Log out", "Login", "Home")
+
+     </div>
+
+    @using (Html.BeginForm("SendFile", "SendSRS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <form>
+            <h4> Send Requirements Document </h4>
+            @Html.DropDownList("User", null, "To", new { @class = "form-control" })
+            <input type="file" name="file" id="file" />
+
+            <input class="button" type="submit" value="Send" />
+        </form>
+    }
+@if (null != TempData["upload"])
+{
+    <script type="text/javascript">
+       alert("@TempData["upload"]");
+    </script>
+}

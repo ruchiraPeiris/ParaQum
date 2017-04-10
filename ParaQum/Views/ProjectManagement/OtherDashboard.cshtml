@@ -1,0 +1,84 @@
+﻿@model ParaQum.Models.SrsData
+
+@{
+    ViewBag.Title = "OtherDashboard";
+
+    int ival2 = 0;
+
+}
+
+@*@{
+
+
+    Layout=null;
+
+    }*@
+
+<title>Dashboard</title>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+
+<link rel="stylesheet" href="@Url.Content("~/Content/style_SRS.css")">
+
+
+
+
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<div class="col-lg-12">
+
+
+    <h2 class="page-header">
+      Home
+    </h2>
+    <ol class="breadcrumb">
+        <li class="active">
+            <span class="glyphicon glyphicon-home"></span>  Home
+        </li>
+
+      
+    </ol>
+
+
+    </div>
+
+<br/><br/></br>
+
+
+    @using (Html.BeginForm("SendFile", "SendSRS", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <form>
+            <h4> Send Requirements Document </h4>
+            <select class="form-control col-md-4" id="listusers" name="listusers" required>
+                @foreach (var se in Model.receiverId)
+                {
+                    <option value="@se">@Model.receiverName[ival2].ToString()</option>
+                    ival2 = ival2 + 1;
+                }
+            </select><br /><br />
+            <div class="name">
+                <label>Title</label>
+                @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "input" } })
+                @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+
+            </div><br /><br />
+            <input type="file" name="file" id="file" />
+
+
+            <br /><br />
+            <input class="button" type="submit" value="Send" />
+        </form>
+    }
+    @if (null != TempData["sentmsg"])
+    {
+        <script type="text/javascript">
+            alert("@TempData["sentmsg"]");
+        </script>
+    }
+

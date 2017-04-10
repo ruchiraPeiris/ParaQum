@@ -1,0 +1,60 @@
+﻿
+@model IEnumerable<ParaQum.Models.BomModel>
+@{
+    ViewBag.Title = "Order View";
+}
+<html>
+<head>
+    <title>imported file</title>
+    @if (null != TempData["BomUploadFail"])
+    {
+        <script type="text/javascript">
+            alert("@TempData["BomUploadFail"]");
+        </script>
+    }
+</head>
+<body>
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-header">
+                        View BOM
+                    </h2>
+
+
+                    <div class="scrollit">
+                        <table border="1">
+                            <tr>
+                                <th>Item</th>
+                                <th>Customer Reference</th>
+                                <th>Ref Designator</th>
+                                <th>QTY - 1 board</th>
+                                <th>QTY - 10 board</th>
+                                <th>MPN</th>
+
+                            </tr>
+                            @foreach (var b in ViewBag.ListProduct)
+                            {
+                                <tr>
+                                    <td>@b.itemNo</td>
+                                    <td>@b.customerRef</td>
+                                    <td>@b.refDesignator</td>
+                                    <td>@b.qty1</td>
+                                    <td>@b.qty10</td>
+                                    <td>@b.mpn</td>
+
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary"> @Html.ActionLink("Back", "Index", "Orders")</button>
+
+</body>
+</html>

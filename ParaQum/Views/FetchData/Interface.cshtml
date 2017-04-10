@@ -1,0 +1,1811 @@
+﻿@model FinalTryDemo.Models.OctopartModel
+@{
+    ViewBag.Title = "Interface";
+}
+@{
+    Layout = null;
+}
+
+
+
+
+<!--additional things/more modifications-->
+
+
+<head>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/Site.css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Octopart.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+
+
+
+    <script>
+
+
+
+        $(document).ready(function () {
+
+
+
+
+
+            $("#search").click(function (event) {//-----------------------------------changed to onclick
+                document.getElementById('defaultOpen').click();
+                $('.table input[type="text"]').val('');
+
+
+                var allInputs = document.getElementById("Form").getElementsByTagName("input");
+                // check if value of box is ""
+                for (var i = 0; i < allInputs.length; i++) {
+                    if (allInputs[i].name != "save")    // ignore submit button
+                    {
+
+
+                        allInputs[i].style.background = "#ffffff";
+
+
+                    }
+                }
+                $("#img-container").html("");
+
+
+                var img = new Image();
+                var category;
+                var compType;
+                var compSubType;
+                var symbolName;
+                var findSymbol;
+                var uid;
+                var tableType;
+                var hits=0; //to give 2 results
+                var im;
+                var one;
+                var ten=false;
+                var hundred=false;
+                var thousand = false;
+                var currencyRate = 0;
+                var dataSet1=false;
+                var dataSet1s;
+                var dataSet1suppPartNo;
+                var datSet1stockqty;
+                var dataSet1suppLink;
+                var dataSet1one;
+                var dataSet1ten;
+                var dataSet1hundred;
+                var dataSet1thousand;
+                var dataSet2suppPartNo;
+                var dataSet2=false;
+                var datSet2stockqty;
+                var dataSet2suppLink;
+                var dataSet2one;
+                var dataSet2ten;
+                var dataSet2hundred;
+                var dataSet2thousand;
+                var minorError;
+                var majorError;
+                var id;
+                var toggle = 0;
+                var tableFound=false;
+                var suppSubCategory;
+                var foundSubCategory = false;
+
+
+                var url = 'http://www.apilayer.net/api/live';
+
+
+                url += '?access_key=f2dc66af82f6409219ec1a4900382884';//my key
+
+                type: 'post';
+
+
+                $.getJSON(url, function (result) {
+
+                    $("#currencyRate").val(result.quotes.USDLKR);
+                   
+                });
+
+
+            
+                var url = 'http://octopart.com/api/v3/parts/match?';
+
+                url += '&queries=[{"mpn":"' + $("#mpn").val()+'"}]';
+
+                url += '&apikey=f079b6a4';//my key
+                url += '&include[]=specs';
+                url += '&include[]=imagesets';
+                url += '&include[]=descriptions';
+                url += '&include[]=datasheets';
+                url += '&include[]=compliance_documents';
+                url += '&include[]=category_uids';
+                url += '&include[]=short_description';
+                url += '&callback=?';
+
+                type: 'post';
+
+
+                $.getJSON(url, function (response) {
+
+
+
+
+                    for (j = 0; j < (response.results[0].items).length; j++) {
+
+                        for (i = 0; i < (response.results[0].items[j].offers).length; i++) {
+
+                            if ((response.results[0].items[j].offers[i].seller.name == $("#supplier").val()) && (response.results[0].items[j].offers[i].prices.USD[0][0] == 1)) {
+
+                                hits++;
+
+
+                                if (hits == 1) {
+
+                                    dataSet1 = true;
+
+                                    dataSet1suppPartNo = response.results[0].items[j].offers[i].sku;
+                                    datSet1stockqty = response.results[0].items[j].offers[i].in_stock_quantity;
+                                    dataSet1suppLink = response.results[0].items[j].offers[i].product_url;
+
+                                    if (response.results[0].items[j].offers[i].prices.hasOwnProperty("USD")) {
+
+                                        dataSet1one = parseFloat(response.results[0].items[j].offers[i].prices.USD[0][1]);
+
+
+                                        for (k = 1; k < (response.results[0].items[j].offers[i].prices.USD).length; k++) {
+
+                                            if (response.results[0].items[j].offers[i].prices.USD[k][0] == 10) {
+                                                dataSet1ten = parseFloat(response.results[0].items[j].offers[i].prices.USD[k][1]) *10;
+                                                ten = true;
+                                            }
+
+                                            else if (response.results[0].items[j].offers[i].prices.USD[k][0] == 100) {
+                                                dataSet1hundred = parseFloat(response.results[0].items[j].offers[i].prices.USD[k][1]) *100;
+                                                hundred = true;
+                                            }
+
+                                            else if (response.results[0].items[j].offers[i].prices.USD[k][0] == 1000) {
+                                                dataSet1thousand = parseFloat(response.results[0].items[j].offers[i].prices.USD[k][1]) *1000;
+                                                thousand = true;
+                                            }
+
+                                        }
+                                    }
+                                }
+
+
+                                else if (hits == 2) {
+                                    dataSet2 = true;
+                                    dataSet2suppPartNo = response.results[0].items[j].offers[i].sku;
+                                    datSet2stockqty = response.results[0].items[j].offers[i].in_stock_quantity;
+                                    dataSet2suppLink = response.results[0].items[j].offers[i].product_url;
+
+                                    if (response.results[0].items[j].offers[i].prices.hasOwnProperty("USD")) {
+
+                                        dataSet2one = response.results[0].items[j].offers[i].prices.USD[0][1];
+
+
+                                        for (k = 1; k < (response.results[0].items[j].offers[i].prices.USD).length; k++) {
+
+                                            if (response.results[0].items[j].offers[i].prices.USD[k][0] == 10) {
+                                                dataSet2ten = response.results[0].items[j].offers[i].prices.USD[k][1] *10;
+                                                ten = true;
+                                            }
+
+                                            else if (response.results[0].items[j].offers[i].prices.USD[k][0] == 100) {
+                                                dataSet2hundred = response.results[0].items[j].offers[i].prices.USD[k][1]*100;
+                                                hundred = true;
+                                            }
+
+                                            else if (response.results[0].items[j].offers[i].prices.USD[k][0] == 1000) {
+                                                dataSet2thousand = response.results[0].items[j].offers[i].prices.USD[k][1]*1000;
+                                                thousand = true;
+                                            }
+
+                                        }
+                                    }
+                                }
+
+
+                            }
+                            if (hits == 2) {//update later
+                                break;
+                            }
+
+                        }
+
+
+                        if (hits == 2) {//update later
+                            break;
+                        }
+
+                    }
+
+
+
+
+                    //if there is any hit we have to find other values
+                    if(dataSet1==true){
+
+
+                        if (ten == false) {
+
+                            dataSet1ten = dataSet1one * 10;
+                        }
+
+                        if (hundred == false) {
+
+                            dataSet1hundred = dataSet1one * 100;
+                        }
+
+                        if (thousand == false) {
+                            dataSet1thousand = dataSet1one * 1000;
+
+                        }
+
+
+
+                    }
+
+                    if (dataSet2 == true) {
+
+
+                        if (ten == false) {
+                            DataSet2ten = dataSet2one * 10;
+                        }
+
+                        if (hundred == false) {
+                            dataSet2hundred = dataSet2one * 100;
+                        }
+
+                        if (thousand == false) {
+                            dataSet2thousand = dataSet2one * 1000;
+                        }
+
+                    }
+
+ 
+
+                    $("#suppPartNo").val(dataSet1suppPartNo);
+                    $("#stockqty").val(datSet1stockqty);
+                    $("#suppLink").val(dataSet1suppLink);
+                    $("#one").val(dataSet1one);
+                    $("#ten").val(dataSet1ten);
+                    $("#hundred").val(dataSet1hundred);
+                    $("#thousand").val(dataSet1thousand);
+                    toggle = 1;
+
+                    $("#defaultOpen").click(function (event) {
+
+
+                        var allInputs1 = document.getElementById("Form").getElementsByTagName("input");
+                        // check if value of box is ""
+                        for (var i = 0; i < allInputs1.length; i++) {
+                            if (allInputs1[i].name != "save")    // ignore submit button
+                            {
+
+
+                                allInputs1[i].style.background = "#ffffff";
+
+
+                            }
+                        }
+
+                        if (toggle == 0) {
+                            $("#suppPartNo").val(dataSet1suppPartNo);
+                            $("#stockqty").val(datSet1stockqty);
+                            $("#suppLink").val(dataSet1suppLink);
+                            $("#one").val(dataSet1one);
+                            $("#ten").val(dataSet1ten);
+                            $("#hundred").val(dataSet1hundred);
+                            $("#thousand").val(dataSet1thousand);
+                            toggle = 1;
+                        }
+
+
+                        var allInputs2 = document.getElementById("Form").getElementsByTagName("input");
+
+                        // check if value of box is ""
+                        for (var i = 0; i < allInputs2.length; i++) {
+                            if (allInputs2[i].name != "save")    // ignore submit button
+                            {
+
+                                if (allInputs2[i].value == "") {
+
+                                    allInputs2[i].style.background = "#990000";
+
+
+                                }
+                            }
+
+                        }
+                    });
+
+                    $("#tab2").click(function (event) {
+
+
+                        var allInputs1 = document.getElementById("Form").getElementsByTagName("input");
+                        // check if value of box is ""
+                        for (var i = 0; i < allInputs1.length; i++) {
+                            if (allInputs1[i].name != "save")    // ignore submit button
+                            {
+
+
+                                allInputs1[i].style.background = "#ffffff";
+
+
+                            }
+                        }
+
+
+                        if (toggle == 1) {
+                            $("#suppPartNo").val(dataSet2suppPartNo);
+                            $("#stockqty").val(datSet2stockqty);
+                            $("#suppLink").val(dataSet2suppLink);
+                            $("#one").val(dataSet2one);
+                            $("#ten").val(dataSet2ten);
+                            $("#hundred").val(dataSet2hundred);
+                            $("#thousand").val(dataSet2thousand);
+                            toggle = 0;
+                        }
+
+                        var allInputs2 = document.getElementById("Form").getElementsByTagName("input");
+
+                        // check if value of box is ""
+                        for (var i = 0; i < allInputs2.length; i++) {
+                            if (allInputs2[i].name != "save")    // ignore submit button
+                            {
+
+                                if (allInputs2[i].value == "") {
+
+                                    allInputs2[i].style.background = "#990000";
+
+
+                                }
+                            }
+
+                        }
+                    });
+
+
+
+                    if(hits==0){
+                        alert("No hits found,Try another MPN or a supplier");
+                        return false;
+                    }
+
+
+                    //find the description
+                    var found = false;
+
+                    for (j = 0; j < (response.results[0].items).length; j++) {
+                        for (i = 0; i < (response.results[0].items[j].descriptions).length; i++) {
+
+                            if (response.results[0].items[j].descriptions[i].attribution.sources[0].name == $("#supplier").val()) {
+                                $("#description").val(response.results[0].items[j].descriptions[i].value);
+                                var category = (response.results[0].items[j].descriptions[i].value).split(" ");
+                                findSymbol = (response.results[0].items[j].descriptions[i].value);
+                                found = true;
+
+                            }
+                            if(found)
+                                break;
+                        }
+                        if (found)
+                            break;
+
+                    }
+
+                    if(found==false){
+                        $("#description").val(response.results[0].items[0].descriptions[0].value);
+
+                    }
+                    //choosing the category
+
+
+                    var count = 0;
+                    for (i = 0; i < (response.results[0].items[0].datasheets).length; i++) {
+                        if(count<=6){
+                            $("#dsLink"+(i+1)).val(response.results[0].items[0].datasheets[i].url);
+                        }
+                        else
+                            break;
+
+
+                    }
+
+                    if (response.results[0].items[0].hasOwnProperty("manufacturer")) {
+                        $("#manufacturer").val(response.results[0].items[0].manufacturer.name);
+                        $("#manufacturerLink").val(response.results[0].items[0].octopart_url);
+
+                    }
+                    for ( i = 0; i < (response.results[0].items[0].imagesets).length;i++){
+
+
+                        if (response.results[0].items[0].imagesets[i].medium_image != null) {
+                            img.src = response.results[0].items[0].imagesets[i].medium_image.url;
+                            break;
+                        }
+                        if (response.results[0].items[0].imagesets[i].small_image != null) {
+                            img.src = response.results[0].items[0].imagesets[i].small_image.url;
+                            break;
+                        }
+
+                    }
+
+                    $("#photoLink").val(img.src);
+
+
+
+
+
+                    img.setAttribute("class", "banner-img");
+                    img.setAttribute("alt", "No image");
+                    document.getElementById("img-container").appendChild(img);
+
+
+
+
+
+                
+
+
+
+
+                    //new code for category================================================================================
+    
+                    // -- your search query --
+                    //string id = "87a44aaeb6be5c63";
+                    
+                    // print matched category items
+                       
+
+                    
+                  
+                    //   lblCapacitance.Text = "Capacitance : ";
+
+                    /*                  if ("Resistors" in catList)
+                                          tableType = "Resistor";
+                                      else if ("Capacitors" in catList)
+                                          tableType = "Capacitor";
+                                      else if ("Inductors" in catList || "Filters, Ferrites and EMI/RFI Components" in catList)
+                                      {
+                                          if ("Filters" in catList)
+                                          {
+                                              tableType = "Filter";
+                                              if (response.results[0].items[0].specs.hasOwnProperty("frequency")) {
+                                                  $("#capacitance").val(response.results[0].items[0].specs.frequenncy.display_value);
+                                              }
+                                              document.getElementById("capacitance").label="frequency";
+                                          }
+              
+                                          else
+                                              tableType = "Inductor";
+                                      }
+                                      else if ("Semiconductors and Actives" in catList){
+                                          if ("ESD Protection" in catList) tableType = "Circuit Protection";
+                                          else if ("MOSFETs" in catList || "Transistors" in catList) tableType = "Transistor";
+                                          else if ("Diodes" in catList) tableType = "Diode";
+                                          else tableType = "IC";
+                                      }
+                                      else if ("Fuses" in catList)
+                                          tableType = "Circuit Protection";
+                                      else if ("Optoelectronics" in catList)
+                                          tableType = "Display";
+                                      else if ("Switches" in catList)
+                                          tableType = "Switch";
+                                      else if ("Oscillators" in catList || "Crystals/Resonators/Oscillators" in catList)
+                                          tableType = "Oscillator";
+                                      else if ("Diodes" in catList)
+                                          tableType = "Diode";
+                                      else if ("Connectors" in catList||"Cable Assemblies and Patch Cords" in catList)
+                                          tableType = "Connector";
+                             
+              
+              
+              
+                             */
+
+
+                    //**************************************************************************************************************************************
+                    //-----------separating the categories by uid---------------------------
+
+
+
+                    for (i = 0; i < (response.results[0].items[0].category_uids).length; i++) { // separate for loop/otherwise gives tableType=inductor
+                        if (response.results[0].items[0].category_uids[i] == ("d77d1a77e69f0cba")) {
+                            tableType = "Transistor";
+                            compType = "Discrete Semiconductor Products ";//Transistor
+
+                            tableFound = true;
+
+                            break;
+                        }
+                    }
+
+                    
+                    if(tableFound==false){
+                        for (i = 0; i < (response.results[0].items[0].category_uids).length; i++) { // separate for loop/otherwise gives tableType=inductor
+                            if (response.results[0].items[0].category_uids[i] == "244ee944154dff89") {
+                                tableType = "Transformer";
+                                compType = "Transformers";//Inductor
+                                tableFound = true;
+
+                                break;
+                            }
+                        }
+                    }
+          
+
+
+                    if(tableFound==false){
+                        for (i = 0; i < (response.results[0].items[0].category_uids).length; i++) { // separate for loop/otherwise gives tableType=inductor
+                            if (response.results[0].items[0].category_uids[i] == "8ef743fdbff05530" ) {
+                                tableType = "Inductor";
+                                compType = "Inductors";//Inductor
+                                tableFound = true;
+
+                                break;
+                            }
+                        }
+                    }
+
+
+                    if (tableFound == false) {
+
+                        for (i = 0; i < (response.results[0].items[0].category_uids).length; i++) {
+                            //*************************************problem here
+                            if (response.results[0].items[0].category_uids[i] == "43be8eb473019879") {
+                                tableType = "Circuit Protection";
+                                compType = "Circuit Protection";
+
+                                break;
+
+                            }
+
+
+
+
+                            else if (response.results[0].items[0].category_uids[i] == "f8883582c9a8234f") {
+                                tableType = "Capacitor";
+                                compType = "Capacitors";
+
+
+
+                                break;
+                            }
+
+
+
+
+                            else if (response.results[0].items[0].category_uids[i] == "75fab8f04590ae3d") {
+                                tableType = "Connector";
+                                compType = "Connectors, Interconnects";
+
+
+
+                                break;
+                            }
+
+
+
+
+                            else if (response.results[0].items[0].category_uids[i] == "3b27f62d0a3ae0e0") {
+                                tableType = "Diode";
+                                compType = " Discrete Semiconductor Products ";//diode
+
+
+
+                                break;
+                            }
+
+
+
+                            else if (response.results[0].items[0].category_uids[i] == "848d4987b4d35f4a") {
+                                tableType = "Display";
+                                compType = "Optoelectronics";//Display
+
+
+                                break;
+                            }
+
+
+                            else if (response.results[0].items[0].category_uids[i] == "bf4e72448e766489" || response.results[0].items[0].category_uids[i] == "09adc4a738a6d26a") {
+                                tableType = "Filter";
+                                compType = "Filters ";
+                                break;
+                            }
+
+
+                      
+
+
+
+                            else if (response.results[0].items[0].category_uids[i] == "9e07530daf1645c0") {
+                                tableType = "IC";
+                                compType = "Integrated Circuits (ICs)";//IC
+
+
+
+                                break;
+                            }
+
+
+
+
+                            else if (response.results[0].items[0].category_uids[i] == "9b085602a2c840cf") {
+                                tableType = "Mechanical";
+                                compType = "Fans, Thermal Management";//Mechanical
+
+
+                                break;
+                            }
+
+
+                            else if (response.results[0].items[0].category_uids[i] == "e7ed2ae7d6e23c2a") {
+                                tableType = "Oscillator";
+                                compType = "Crystals and Oscillators";//Oscillator
+
+
+
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == "5c6a91606d4187ad") {
+                                tableType = "Resistor";
+                                compType = "Resistors";//Resistor
+
+
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == "8ce341e9bf4c5724") {
+                                tableType = "Switch";
+                                compType = "Switches";//Switch
+
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == "f5e438eec42d2e23") {
+                                tableType = "FPGA";
+                                compType = "FPGA";//Switch
+
+                                break;
+                            }
+                     
+
+
+
+                        }
+
+
+                    }
+
+
+                    //separating the subcategories
+
+
+
+
+   
+                    //for capacitor
+                    if (tableType == "Capacitor") {
+                        if (response.results[0].items[0].category_uids[3] == "d820152ae1f903e7") {
+                            if (response.results[0].items[0].category_uids[0] == "f0433d49c9e52b84")
+                                suppSubCategory = "Tantalum - Polymer Capacitors";
+
+                            else if (response.results[0].items[0].category_uids[0] == "e7ca2ac0de173c0d")
+                                suppSubCategory = "Aluminum - Polymer Capacittsors ";
+
+
+                        }
+
+
+                        else  if (response.results[0].items[0].category_uids[0] == "f6473b4dcf9d2d80")
+                            suppSubCategory = "Ceramic Capacitors";
+
+                        else if (response.results[0].items[0].category_uids[0] == "f0433d49c9e52b84")
+                            suppSubCategory = "Tantalum Capacitors";
+                        foundSubCategory = true;
+
+                    }
+
+                    // for other sub categories that needs uid combinations
+
+                    if (tableType == "Connector") {
+                        if (response.results[0].items[0].category_uids[0] == "8af947f3b327513e") {
+                            if (response.results[0].items[0].category_uids[2] == "3e6ef3640b2fe5a9")
+                                suppSubCategory = "Memory Connectors - PC Cards";
+
+                            else
+                                suppSubCategory = "Memory Connectors - Inline Module Sockets";
+
+
+                        }
+
+
+                        else if (response.results[0].items[0].category_uids[0] == "f6473b4dcf9d2d80")
+                            suppSubCategory = "Ceramic Capacitors";
+
+                        else if (response.results[0].items[0].category_uids[0] == "f0433d49c9e52b84")
+                            suppSubCategory = "Tantalum Capacitors";
+
+                        foundSubCategory = true;
+                    }
+
+
+                    if (tableType == "IC") {
+                        if (response.results[0].items[0].category_uids[0] == "bad177db8b576116") {
+                            if (response.results[0].items[0].category_uids[1] == "56439b4967f48d84")
+                                suppSubCategory = "PMIC - Voltage Regulators - Linear (LDO)";
+
+                        }
+                   
+
+                        else if (response.results[0].items[0].category_uids[0] == "56439b4967f48d84"){
+                            if (response.results[0].items[0].category_uids[1] == "fa86378ccb3e2141")
+                                suppSubCategory = "PMIC - Supervisors";
+                        }
+                        else if (response.results[0].items[0].category_uids[0] == "8436493cb5fb5ff1"){
+                            if (response.results[0].items[0].category_uids[1] == "f5e438eec42d2e23")
+                                suppSubCategory = "Embedded - FPGAs (Field Programmable Gate Array) ";
+                        }
+
+                        foundSubCategory = true;
+                    }
+
+
+
+                    if (tableType == "FPGA") {
+                    
+                        if (response.results[0].items[0].category_uids[0] == "8436493cb5fb5ff1" && response.results[0].items[0].category_uids[1] == "f5e438eec42d2e23") {
+                           
+                                suppSubCategory = "Embedded - FPGAs (Field Programmable Gate Array) ";
+                        }
+
+                        foundSubCategory = true;
+                    }
+
+
+
+
+
+
+
+                    if (tableType == "Mechanical") {
+                        if (response.results[0].items[0].category_uids[0] == "f3933e99c0452854") {
+                            if (response.results[0].items[0].category_uids[1] == "1111dc1b28dbcad6")
+                                suppSubCategory = "Thermal - Heat Sinks";
+
+                        }
+                        foundSubCategory = true;
+                    }
+
+
+                    // for sub categories that needs only one uid
+
+                    if (foundSubCategory == false) {
+                        for (i = 0; i < (response.results[0].items[0].category_uids).length; i++) {
+                            if (response.results[0].items[0].category_uids[i] == ("1a30d73a2e7bc1f7")) {
+                                suppSubCategory = "TVS - Diodes ";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("7bf8b6f24b72a03f")) {
+                                suppSubCategory = "Fuses";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("f5f838f2cc2f2e3f")) {
+                                suppSubCategory = "PTC Resettable Fuses";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("e7012a0bd22e3cc6")) {
+                                suppSubCategory = "Rectangular Connectors";
+                                break;
+                            }
+                            else if (response.results[0].items[0].category_uids[i] == ("7fcab2c04bbba40d")) {
+                                suppSubCategory = "Modular Connectors - Jacks";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("d1b41cbee0af0a73")) {
+                                suppSubCategory = "Diodes - Zener - Single";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("c85a0550f9be139d")) {
+                                suppSubCategory = "Diodes, Rectifiers - Single";
+                                break;
+                            }
+
+
+                            else if (response.results[0].items[0].category_uids[i] == ("0dd3c0d93d8cd614")) {
+                                suppSubCategory = "LED Indication";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("cdae0ca4e1361a69")) {
+                                suppSubCategory = "LEDs - Circuit Board Indicators, Arrays, Light Bars, Bar Graphs ";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("c67d0b77f76a1dba")) {
+                                suppSubCategory = "Ferrite Beads and Chips";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("2fc5e2cf1b85f402")) {
+                                suppSubCategory = "Interface - Specialized";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("50709d7a61ce8bb7")) {
+                                suppSubCategory = "Voltage Regulators - DC DC Switching Regulators";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("1a2bd7212bffc1ec")) {
+                                suppSubCategory = "Logic - Gates and Inverters";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("1f02d2082ec3c4c5")) {
+                                suppSubCategory = "Clock/Timing - Clock Generators, PLLs, Frequency Synthesizers";
+                                break;
+                            }
+                            else if (response.results[0].items[0].category_uids[i] == ("0542c84834e1de85")) {
+                                suppSubCategory = "memory";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("8ef743fdbff05530")) {
+                                suppSubCategory = "Fixed Inductors";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("9afb57f1abf5413c")) {
+                                suppSubCategory = "Crystals";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("e7ed2ae7d6e23c2a")) {
+                                suppSubCategory = "Oscillators";
+                                break;
+                            }
+                            else if (response.results[0].items[0].category_uids[i] == ("008acd80318bdb4d")) {
+                                suppSubCategory = "Programmable Oscillators";
+                                break;
+                            }
+                            else if (response.results[0].items[0].category_uids[i] == ("a2f46ffe9b377933")) {
+                                suppSubCategory = "Chip Resistor - Surface Mount";
+                                break;
+                            }
+                            else if (response.results[0].items[0].category_uids[i] == ("a9a064aa9a0a7267")) {
+                                suppSubCategory = "Tactile Switches";
+                                break;
+                            }
+
+                            else if (response.results[0].items[0].category_uids[i] == ("e3012e0bd0b438c6")) {
+                                suppSubCategory = "Slide Switches";
+                                break;
+                            }
+                            else if (response.results[0].items[0].category_uids[i] == ("7787ba8d4431ac40")) {
+                                suppSubCategory = "DIP Switches";
+                                break;
+                            }
+                            else if (response.results[0].items[0].category_uids[i] == ("2bfae6f01857f03d")) {
+                                suppSubCategory = "DPDT Push Button Switch";
+                                break;
+                            }
+                            else if (response.results[0].items[0].category_uids[i] == ("e7b12abbd6523c76")) {
+                                suppSubCategory = "MOSFETs";
+                                break;
+                            }
+                        }
+
+                    }
+
+
+                    if (response.results[0].items[0].specs.hasOwnProperty("capacitance")) {
+                        $("#capacitance").val(response.results[0].items[0].specs.capacitance.display_value);
+                    }
+
+                    if (response.results[0].items[0].specs.hasOwnProperty("resistance")) {
+                        $("#resistance").val(response.results[0].items[0].specs.resistance.display_value);
+                    }
+
+                    if (response.results[0].items[0].specs.hasOwnProperty("voltage_rating_dc")) {
+                        $("#voltage").val(response.results[0].items[0].specs.voltage_rating_dc.display_value);
+                    }
+
+                    if (response.results[0].items[0].specs.hasOwnProperty("current_rating")) {
+                        $("#current").val(response.results[0].items[0].specs.current_rating.display_value);
+                    }
+
+
+                    if (response.results[0].items[0].specs.hasOwnProperty("case_package")) {
+                        $("#package").val(response.results[0].items[0].specs.case_package.display_value);
+                    }
+
+                    if (response.results[0].items[0].specs.hasOwnProperty("capacitance_tolerance")) {
+                        $("#tolerance").val(response.results[0].items[0].specs.capacitance_tolerance.display_value);
+                    }
+
+                    if (response.results[0].items[0].specs.hasOwnProperty("power_rating")) {
+                        $("#power").val(response.results[0].items[0].specs.power_rating.display_value);
+                    }
+
+                    if (response.results[0].items[0].specs.hasOwnProperty("inductance")) {
+                        $("#inductance").val(response.results[0].items[0].specs.inductance.display_value);
+                    }
+
+                    if (tableType == "Oscillator" && response.results[0].items[0].specs.hasOwnProperty("frequency")) {
+                        $("#value").val(response.results[0].items[0].specs.frequency.value);
+                    }
+
+
+                    //******************************************************************************************************************************8
+
+                    $("#type").val(compType);
+                    // $("#suppSubCategory").val(compSubType);
+                    //
+                    $("#tab").val(tableType);
+                  
+                    $("#suppSubCategory").val(suppSubCategory);
+
+
+
+
+
+
+
+                    var allInputs = document.getElementById("Form").getElementsByTagName("input");
+
+                    // check if value of box is ""
+                    for (var i = 0; i < allInputs.length; i++) {
+                        if (allInputs[i].name != "save")    // ignore submit button
+                        {
+
+
+                            if (allInputs[i].value == "") {
+
+                                allInputs[i].style.background = "#990000";
+
+
+                            }
+                        }
+                    }
+
+           
+
+                    // check if value of box is ""
+      
+
+
+                    /*         $("#save").click(function (event) {
+                
+                
+                
+                
+                
+                                 if (majorError ) {
+                                     alert('Please fill the compulsory data');
+                                     return false;
+                
+                
+                                 }
+                
+                                 // validation code here ...
+                               else  if(minorError){
+                
+                                 return confirm('Do you really want to submit the form?');
+                                 }
+                
+                
+                
+                             });*/
+                });
+
+           
+        });
+            var blank = false;
+
+            $("#save").click(function (event) {
+
+                if (isNaN(parseInt($("#capacitance").val())) && ($("#capacitance").val() != "") || (isNaN(parseInt($("#resistance").val())) && ($("#resistance").val() != "")) || (isNaN(parseInt($("#inductance").val())) && ($("#inductance").val() != "")) || (isNaN(parseInt($("#power").val())) && ($("#power").val() != "")) || (isNaN(parseInt($("#voltage").val())) && ($("#voltage").val() != "")) || (isNaN(parseInt($("#current").val())) && ($("#current").val() != ""))) {
+                        alert("some spec value does not have numbers.Recheck");
+                return false;
+            }   
+                if ($("#mpn").val() == "" || $("#tab").val() == "" || $("#description").val() == "" ) {
+                    alert("Check the following fields.Cannot be EMPTY\n* Manufacturer part number\n* Table\n* Description");
+                    return false;
+                     }
+                else if ($("#mpn").val() != "") {
+                    var allInputs2 = document.getElementById("Form").getElementsByTagName("input");
+
+                    // check if value of box is ""
+                    for (var i = 0; i < allInputs2.length; i++) {
+                        if (allInputs2[i].name != "save") {  // ignore submit button
+
+                            if (allInputs2[i].value == "") {
+                                blank = true;
+                                break;
+                            }
+                            else {
+                                blank = false;
+                            }
+                        }
+                    }
+                    if(blank){
+                        alert("Do you want to continue");
+                        return true;
+                    }
+
+            }
+
+            });
+
+        });
+
+
+    </script>
+
+
+</head>
+
+
+<body id="bod">
+
+    <div id="first">
+        <div class="tab">
+            <img id="logo" src="~/Content/images/logo.png" />
+
+            <button class="tablinks btn btn-primary btn-lg" onclick="openCity(event)" id="tab2">Result 2</button>
+
+            <button class="tablinks btn btn-primary btn-lg" onclick="openCity(event)" id="defaultOpen">Result 1</button>
+
+        </div>
+
+        @if (Session["userName"] == null)
+            {
+
+                { Response.Redirect("~/Home/LogIn"); }
+            }
+
+
+
+
+
+        @using (Html.BeginForm("AddData", "FetchData", FormMethod.Post, new { id = "Form" }))
+        {
+       
+            <table style="margin-left:10px;margin-top:20px;">
+                <tbody>
+
+
+                    <tr class="separate">
+
+
+                        <th>
+                            @Html.Label("mpn", "Manufacturer Part No")
+                        </th>
+
+                        <td>
+                            @Html.TextBox("mpn", null, new { @class = "form-control press" })
+                        </td>
+
+
+
+                    </tr>
+
+                    <tr>
+
+
+                        <th class="separate">
+                            @Html.Label("supplier", "Supplier")
+
+                        </th>
+
+                        <td>
+
+                            @Html.DropDownListFor(model => model.supplier, new SelectList(
+                         new List<Object>{
+                       new { value = "Digi-Key" , text = "Digi-Key"  },
+                       new { value = "Mouser" , text = "Mouser" },
+                        new { value = "Farnell" , text = "Farnell" },
+                         new { value = "Farnell" , text = "Avnet" },
+
+                         new { value = "Allied Electronics" , text = "Allied Electronics" },
+                           new { value = "Arrow" , text = "Arrow" },
+                       new { value = "Quest" , text = "Quest"}
+                           },
+
+                         "value",
+                         "text",
+                         "Digi-Key"))
+
+                        </td>
+
+
+
+                    </tr>
+
+
+
+
+                    <tr id="align">
+                        <th></th>
+                        <td >
+                            
+                                <input id="search" style="margin-bottom:0px;" class="btn " type="button" value="Search" />
+                          <br />
+
+
+                                <input id="save" style="margin-bottom:30px;"   class="btn " type="submit" value="Save the data" />
+
+
+</td>
+                    </tr>
+
+            </table>
+
+            <div class="col-sm-4">
+                <div id="secondTab">
+                    <table class="table" style="margin-top:10px;">
+                        <tbody>
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("manufacturer", "Manufacturer")
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("manufacturer", null, new { @class = "form-control press" })
+
+                                </td>
+
+
+
+                            </tr>
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("manufacturerLink", "Manufacturer Link")
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("manufacturerLink", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("description", "Part Description")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("description", null, new { @class = "form-control" })  <!--wetenne ne-->
+
+                                </td>
+
+
+
+                            </tr>
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("suppPartNo", "Supplier Part No")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("suppPartNo", null, new { @class = "form-control" })<!--wetenne ne-->
+
+                                </td>
+
+
+
+                            </tr>
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("type", "Supplier Category")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("type", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("suppSubCategory", "Supplier Sub Category")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("suppSubCategory", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+                            <tr>
+
+
+                                <th class="separate">
+                                    @Html.Label("tab", "Table")
+
+                                </th>
+
+                                <td>
+                                 
+                                      
+                                            @Html.TextBox("tab", null, new { @class = "form-control in" })
+                                           
+                                            <select id="dropdown">
+                                                <option value="">Choose table</option>
+                                                <option value="Audio">Audio</option>
+                                                <option value="Battery">Battery</option>
+                                                <option value="Capacitor">Capacitor</option>
+                                                <option value="Circuit Protection">Circuit Protection</option>
+                                                <option value="Connector">Connector</option>
+                                                <option value="Diode">Diode</option>
+                                                <option value="Display">Display</option>
+                                                <option value="Filter">Filter</option>
+                                                <option value="IC">IC</option>
+                                                <option value="Inductor">Inductor</option>
+                                                <option value="Mechanical">Mechanical</option>
+                                                <option value="Oscillator">Oscillator</option>
+                                                <option value="Resistor">Resistor</option>
+                                                <option value="Switch">Switch</option>
+                                                <option value="Test Points">Test Points</option>
+                                                <option value="Transformer">Transformer</option>
+                                                <option value="Transistor">Transistor</option>
+                                          
+
+                                            </select>
+                                   
+
+ 
+
+                                </td>
+
+
+
+                            </tr>
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("suppLink", "Supplier Link")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("suppLink", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("dsLink1", "Datasheet 1")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("dsLink1", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+
+
+
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("dsLink2", "Datasheet 2")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("dsLink2", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("dsLink3", "Datasheet 3")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("dsLink3", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("dsLink4", "Datasheet 4")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("dsLink4", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+
+
+
+
+
+
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-sm-4" >
+                <div id="thirdTab">
+
+                    <table class="table" style="margin-top:0px;">
+                        <tbody>
+
+
+                            @Html.HiddenFor(model => model.currencyRate, new { id = "currencyRate" });
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("dsLink5", "Datasheet 5")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("dsLink5", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("dsLink6", "Datasheet 6")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("dsLink6", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("photoLink", "Photo Link")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("photoLink", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("resistance", "Resistance")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("resistance", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("capacitance", "Capacitance")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("capacitance", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("inductunce", "Inductance")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("inductance", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("tolerance", "Tolerance")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("tolerance", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("voltage", "Rated Voltage")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("voltage", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("current", "Rated Current")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("current", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("power", "Rated Power")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("power", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("package", "Package")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("package", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <!--   <tr>
+
+
+                                    <th>
+                             @Html.Label("status", "Status")
+
+                                    </th>
+
+                                    <td>
+                                        @Html.TextBox("status", null, new { @class = "form-control" })
+
+                                    </td>
+
+
+
+                                </tr>-->
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("stockqty", "Stock Qty")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("stockqty", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("value", "Value")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("value", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+
+
+                <div id="lastTabDiv">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+
+
+                                <th class="lastTab">
+                                    Quantity
+
+                                </th>
+
+                                <th>
+                                    Cost
+
+                                </th>
+
+
+
+                            </tr>
+
+                            <tr>
+
+
+                                <td class="lastTab">
+                                    @Html.Label("one", "1")
+
+                                </td>
+
+                                <td>
+
+                                    @Html.TextBox("one", null, new { @class = "form-control" })
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <td class="lastTab">
+                                    @Html.Label("ten", "10")
+
+                                </td>
+
+                                <td>
+                                    @Html.TextBox("ten", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <td class="lastTab">
+                                    @Html.Label("hundred", "100")
+
+                                </td>
+
+                                <td>
+                                    @Html.TextBox("hundred", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+                            <tr>
+
+
+                                <td class="lastTab">
+                                    @Html.Label("thousand", "1000")
+
+                                </td>
+
+                                <td>
+                                    @Html.TextBox("thousand", null, new { @class = "form-control" })
+
+                                </td>
+
+
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+
+  
+
+
+        }
+
+
+        <div class="col-sm-2">
+            <p style="font-weight:bolder">Image</p>
+            <div id="img-container">
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+    <script>
+function openCity(evt) {
+    var i, tablinks;
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+
+var mytextbox = document.getElementById('tab');
+var mydropdown = document.getElementById('dropdown');
+
+mydropdown.onchange = function () {
+    mytextbox.value =this.value; //to appened
+    //mytextbox.innerHTML = this.value;
+}
+
+
+    </script>
+</body>
+
+@if (null != TempData["notice"]) {
+    <script type="text/javascript">
+        alert("@TempData["notice"]");
+
+    </script>
+
+}

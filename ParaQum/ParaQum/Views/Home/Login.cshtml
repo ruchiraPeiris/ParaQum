@@ -1,0 +1,63 @@
+﻿@model ParaQum.Models.Login
+@{
+    ViewBag.Title = "Login";
+}
+
+@{
+    Layout = "~/Views/Shared/Login_layout.cshtml";
+}
+<br />
+<img alt="Logo" src="@Url.Content("~/Content/images/logo.png")" /><br /><br /><hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <section id="loginForm">
+                <h3>Login</h3>
+                @using (Html.BeginForm("Login", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+
+
+                    @Html.AntiForgeryToken()
+
+
+
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                 
+
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.username, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(a => a.username, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(a => a.username, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(a => a.password, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(a => a.password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(a => a.password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Log in" class="btn btn-primary" />
+                            </div>
+                        </div>
+
+
+
+                }
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+

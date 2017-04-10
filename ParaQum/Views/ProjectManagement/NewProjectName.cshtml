@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Enter Project Name";
+
+}
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+</head>
+<div class="well well-sm" style="background-color: #ddffcc;margin-right:0px;"><h2 style="margin-left:350px;">Welcome to Paraqum Project Management</h2> </div>
+
+<body>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <ol class="breadcrumb">
+                        <li>
+                            <span class="glyphicon glyphicon-home"></span>  Home
+                        </li>
+                        <li >
+                            <span class="glyphicon glyphicon-folder-close"></span> Paraqum Projects
+                        </li>
+                        <li class="active">
+                            <span class="glyphicon glyphicon-folder-close"></span> Create New Project
+                        </li>
+                    </ol>
+                    <div class="row proBar" style="background-color:#001a66;">
+
+                        <div class="col-md-2" style="margin-left:35px;">
+                            <a href="@Url.Action("OpenNewProjectNameWindow", "ProjectManagement")"><img src="~/assets/filespng.png" border="0" style="width:100px;height:100px;" alt="Link to this page"></a>
+                        </div>
+                        <div class="col-md-2" style="margin-left:280px;">
+                            <a href="@Url.Action("AsignProjectNameWindow", "ProjectManagement")"><img src="~/assets/members.png" border="0" style="width:100px;height:100px;opacity:0.6;" alt="Link to this page"></a>
+                        </div>
+                        <div class="col-md-2" style="margin-left:295px;">
+                            <a href="@Url.Action("AllNotoficationsWindow", "ProjectManagement")"><img src="~/assets/notifications.png" border="0" style="width:100px;height:100px;opacity:0.6;" alt="Link to this page"></a>
+                        </div>
+                    </div>
+
+                    <div class="row proBar" style="background-color: #c1d0f0 ;">
+
+                        <div class="col-md-4" style="margin-left:5px;">
+                            <h4><b>Create New Project</b></h4>
+                        </div>
+                        <div class="col-md-2" style="margin-left:100px;">
+                            <h4> <b>Assign Users</b> </h4>
+                        </div>
+                        <div class="col-md-2" style="margin-left:280px;">
+                            <h4><b>Send a Message</b></h4>
+                        </div>
+
+                    </div><br />
+                    <h4>Do You Want to Create a New Project?</h4>
+               
+                    @using (Html.BeginForm("CreateNewProject", "ProjectManagement", FormMethod.Post))
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="col-md-8">
+                                    <div class="input-group col-md-12">
+                                        <input type="text" maxlength="250" required class="form-control  col-md-12" placeholder="Enter Project Name..." name="sProjectName">
+                                    </div>
+                                </div>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-success" type="submit">Create New Project</button>
+                                </span>
+                            </div>
+                        </div>
+                    }
+                    <hr /><br />
+             
+                        <h4>Projects You Are Currently Working On</h4>
+                        <br />
+
+                        <table id="example" class="table">
+
+                            <thead>
+                                <tr><th style="padding-right:80px;">Project Name</th><th style="padding-left:80px;">#View Project</th><th style="padding-left:80px;">#Do you want to delete a project?</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var se in Model)
+                                {
+                                    <tr>
+                                        <td style="padding-right:80px;">@se.ProName</td>
+                                        
+                                        <td style="padding-left:80px;">
+                                            @Html.ActionLink("Click To View",
+"NeWProjectWindow",   // <-- ActionMethod
+"ProjectManagement",  // <-- Controller Name.
+new { se.intProjectID }, // <-- Route arguments.
+                null  // <-- htmlArguments .. which are none. You need this value
+                      //     otherwise you call the WRONG method ...
+                      //     (refer to comments, below).
+                )
+                                        </td>
+                                      
+                                        <td style="padding-left:80px;">
+                                            @Html.ActionLink("Click To Delete",
+"DeleteProjet",   // <-- ActionMethod
+"ProjectManagement",  // <-- Controller Name.
+new { se.intProjectID }, // <-- Route arguments.
+                null  // <-- htmlArguments .. which are none. You need this value
+                      //     otherwise you call the WRONG method ...
+                      //     (refer to comments, below).
+                )
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                    </div>
+                </div>
+        </div>
+  
+ 
+</body>

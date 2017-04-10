@@ -1,0 +1,238 @@
+﻿
+@{
+    ViewBag.Title = "AddComponent";
+}
+
+
+
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<img id="logo" src="~/Content/images/logo.png" />
+
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $(".change").change(function () {
+
+            $('.table input[type="text"]').val('');
+
+            var img = new Image();
+            var changeMpn = $(this).attr("id");
+
+
+
+
+            var url = 'http://octopart.com/api/v3/parts/match?';
+            // url += '&queries=[{"mpn":"'+$("#mpn").val()+'", "seller":"'+ $('#supplier').val()+'"}]';
+            url += '&queries=[{"mpn":"' + $("#mpn").val() + '"}]';
+
+            url += '&apikey=f079b6a4';//my key
+            url += '&include[]=specs';
+            url += '&include[]=imagesets';
+            url += '&include[]=descriptions';
+            url += '&include[]=datasheets';
+            url += '&include[]=compliance_documents';
+            url += '&include[]=category_uids';
+            url += '&callback=?';//I don't know
+
+
+            /*   var args = {
+                   q: "solid state relay",
+                   sortby: "specs.current_rating.value desc"
+               };
+
+               */
+
+            $.getJSON(url, function (response) {
+                /*  $("#packaging").val(response.results[0].items[0].offers[0].factory_lead_days);//form eke text boxes walata yanne.(.val() func eken)
+                  $("#stockqty").val(response.results[0].items[0].offers[0].in_stock_quantity);//oya vid eke tyena .text dammoth meka browser eke print wenwa.I tried.Issaraha tyena id eka wenas krala balnna ethakota.
+                  $("#here").text(response.results[0].items[0].manufacturer.name);
+                  $("#here2").text(response.results[0].items[0].offers[1].seller.name);*/
+
+                for(i=0;i<(response.results[0].items[0].offers).length;i++) {
+                    if (response.results[0].items[0].offers[i].seller.name==$("#supplier").val()) {
+                        $("#suppPartNo").val(response.results[0].items[0].offers[i].sku);
+                        $("#stockqty").val(response.results[0].items[0].offers[i].in_stock_quantity);
+                        break;
+                    }
+
+                }
+                for (i = 0; i < (response.results[0].items[0].descriptions).length; i++) {
+                    if (response.results[0].items[0].descriptions[i].attribution.sources[0].name == $("#supplier").val()) {
+                        $("#description").val(response.results[0].items[0].descriptions[i].value);
+                          break;
+                    }
+
+                }
+
+
+                    $("#dsLink").val(response.results[0].items[0].datasheets[0].url);
+                $("#manufacturer").val(response.results[0].items[0].manufacturer.name);
+                $("#photoLink").val(response.results[0].items[0].imagesets[0].medium_image.url);
+
+                if (changeMpn == "mpn") {
+
+                    img.src = response.results[0].items[0].imagesets[0].medium_image.url;
+                    img.setAttribute("class", "banner-img");
+                    img.setAttribute("alt", "effy");
+                    document.getElementById("img-container").appendChild(img);
+                    //document.getElementById("here").innerHTML = text1;
+                    // $("#here").html(supp.product_url+'<br />');
+                }
+
+
+
+
+
+
+                });
+
+        });
+
+
+        });
+
+
+
+
+</script>
+
+<form>
+
+    <table>
+        <tbody>
+            <tr>
+                <th><label for="mpn">MPN</label></th>
+                <td><input class="change" id="mpn" type="text" /></td>
+
+            </tr>
+
+            <tr>
+                <th><label>Supplier</label></th>
+                <td>
+                    <select class="change" id="supplier">
+
+                        <option>Digi-Key</option>
+                        <option>Mouser</option>
+                        <option>Quest</option>
+                        <option>Future Electronics</option>
+                    </select>
+                </td>
+            </tr>
+    </table>
+</form>
+<row>
+
+    <form>
+        <div class="col-sm-4">
+            <div style="float:left; position:relative; margin-right:40px">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Manufacturer</th>
+                            <td><input id="manufacturer" value="" type="text" /></td>
+                        </tr>
+
+                        <tr>
+                            <th>Part Description</th>
+                            <td><input id="description" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Supplier Part NO</th>
+                            <td><input id="suppPartNo" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Supplier Category</th>
+                            <td><input id="category" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Supplier Sub Category</th>
+                            <td><input id="subCategory" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Supplier Link</th>
+                            <td><input id="suppLink" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Datasheets</th>
+                            <td><textarea id="dsLink" value=""></textarea> </td>
+                        </tr>
+                        <tr>
+                            <th>Photo Link</th>
+                            <td><input id="photoLink" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Resistence</th>
+                            <td><input id="resistence" value="" type="text" /></td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div style="position:relative">
+
+                <table class="table">
+                    <tbody>
+
+                        <tr>
+                            <th>Capacitance</th>
+                            <td><input id="capacitance" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Inductance</th>
+                            <td><input id="inductance" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Tolerance</th>
+                            <td><input id="tolerance" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Rated Voltage</th>
+                            <td><input id="voltage" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Rated Current</th>
+                            <td><input id="current" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Rated Power</th>
+                            <td><input id="power" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Package</th>
+                            <td><input id="package" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td><input id="status" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Component Type</th>
+                            <td><input id="componentType" value="" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <th>Supplier Stock</th>
+                            <td><input id="stockqty" value="" type="text" /></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </form>
+
+    <div class="col-sm-4">
+        <div class="banner-section" id="img-container">
+        </div>
+    </div>
+</row>
+

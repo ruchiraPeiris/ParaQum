@@ -1,0 +1,125 @@
+﻿
+
+
+@model IEnumerable<ParaQum.Models.Bom>
+
+
+@{
+    ViewBag.Title = "Bom";
+}
+
+<br />
+@*<div id="RenderCreate">
+        @Html.Partial("Create", new ParaQum.Models.Bom())
+    </div>*@
+
+@*<h4>Registered Users</h4>*@
+<br />
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">
+                    BOM Details
+                </h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <span class="glyphicon glyphicon-home"></span>  Home
+                    </li>
+                   
+                    <li class="active">
+                        <span class="glyphicon glyphicon-list-alt"></span> Import BOM
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-list-alt"></span> BOM Details
+                    </li>
+                </ol>
+                <div class="panel panel-primary">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">BOM details</div>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BomId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ExcelFile)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AddedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.State)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProjectId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProjectName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrderId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.date)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BomId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExcelFile)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AddedBy)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProjectId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProjectName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.date)
+                                </td>
+                                <td>
+
+
+
+
+
+                                    <a href="/Boms/edit/@item.BomId">Edit</a>
+                                    <a href="/Boms/delete/@item.BomId">Delete</a>
+                                <td />
+                            </tr>
+
+
+                        }
+
+                    </table>
+                </div>
+                </div>
+</div>
+        </div>
+</div>
+                @if (null != TempData["createmsg"])
+                {
+                    <script type="text/javascript">
+       alert("@TempData["createmsg"]");
+                    </script>
+                }
+
+

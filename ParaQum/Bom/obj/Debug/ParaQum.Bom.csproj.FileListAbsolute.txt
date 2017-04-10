@@ -1,0 +1,6 @@
+E:\3.4.2017\ParaQum\ParaQum\Bom\bin\Debug\Bom.dll
+E:\3.4.2017\ParaQum\ParaQum\Bom\bin\Debug\Bom.pdb
+E:\3.4.2017\ParaQum\ParaQum\Bom\bin\Debug\GridMvc.dll
+E:\3.4.2017\ParaQum\ParaQum\Bom\obj\Debug\ParaQum.Bom.csprojResolveAssemblyReference.cache
+E:\3.4.2017\ParaQum\ParaQum\Bom\obj\Debug\Bom.dll
+E:\3.4.2017\ParaQum\ParaQum\Bom\obj\Debug\Bom.pdb
