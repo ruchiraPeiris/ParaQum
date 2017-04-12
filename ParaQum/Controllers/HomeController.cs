@@ -31,7 +31,7 @@ namespace ParaQum.Controllers
         public ActionResult Login()
         {
 
-            if (User.Identity.IsAuthenticated)
+            if (Request.Cookies["authcookie"] != null && Session["type"] != null)
             {
 
                 return RedirectToAction("Admindashboard", "ProjectManagement");
@@ -77,7 +77,14 @@ namespace ParaQum.Controllers
                         Session["isDesigner"] = log.designer.ToString();
                         Session["isIm"] = log.inventoryManager.ToString();
 
+                        if (lg.rememberMe)
+                        {
 
+                            Response.Cookies["authcookie"]["userName"] = log.userName;
+                            Response.Cookies["authcookie"]["password"] = log.password;
+                            Response.Cookies["authcookie"].Expires = DateTime.Now.AddDays(5);
+
+                        }
 
                         if (Session["userName"] == null)
                         {
@@ -142,9 +149,15 @@ namespace ParaQum.Controllers
 
         public ActionResult Logout()
         {
-
+            if (Request.Cookies["authcookie"] != null)
+            {
+                var c = new HttpCookie("authcookie");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
 
             Session.RemoveAll();
+
 
             return RedirectToAction("Login");
 
@@ -166,16 +179,7 @@ namespace ParaQum.Controllers
 
         }
 
-        public JsonResult CheckPrivilege(Boolean admin, Boolean im, Boolean designer, Boolean other)
-        {
-
-
-            return Json(!((admin==false)&&(im == false) &&(designer == false) &&(other == false)),JsonRequestBehavior.AllowGet);
-
-
-        }
-
-
+       
 
 
 

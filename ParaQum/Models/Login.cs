@@ -25,5 +25,7 @@ namespace ParaQum.Models
         //[Required(ErrorMessage = "Verification code is required")]
         public string verificationCode { get; set; }
 
+        public bool rememberMe { get; set; }
+
     }
 }

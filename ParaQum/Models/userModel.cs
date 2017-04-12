@@ -38,7 +38,7 @@ namespace ParaQum.Models
         public Boolean admin { get; set; }
        
         public Boolean designer { get; set; }
-        [Remote("CheckPrivilege", "Home", AdditionalFields = "admin,designer,inventoryManager", ErrorMessage = "Please select user type")]
+     
         public Boolean other { get; set; }
 
         public string emailSubject = "This is the password for your ParaQum account";
