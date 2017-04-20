@@ -31,10 +31,18 @@ namespace ParaQum.Controllers
         public ActionResult Login()
         {
 
-            if (Request.Cookies["authcookie"] != null && Session["type"] != null)
-            {
 
-                return RedirectToAction("Admindashboard", "ProjectManagement");
+           
+            if(Session["type"]!=null) {
+                if (Session["type"].ToString() == "4")
+                {
+
+                    return RedirectToAction("OtherDashboard", "ProjectManagement");
+
+                }
+
+
+                return RedirectToAction("AdminDashboard", "ProjectManagement");
 
             }
 

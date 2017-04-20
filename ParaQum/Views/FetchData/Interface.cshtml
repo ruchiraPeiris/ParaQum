@@ -66,7 +66,7 @@
                 var ten=false;
                 var hundred=false;
                 var thousand = false;
-                var currencyRate = 0;
+                //var currencyRate = 0;
                 var dataSet1=false;
                 var dataSet1s;
                 var dataSet1suppPartNo;
@@ -93,22 +93,22 @@
                 var foundSubCategory = false;
 
 
-                var url = 'http://www.apilayer.net/api/live';
+                //var url = 'http://www.apilayer.net/api/live';
 
 
-                url += '?access_key=f2dc66af82f6409219ec1a4900382884';//my key
+                //url += '?access_key=f2dc66af82f6409219ec1a4900382884';//my key
 
-                type: 'post';
-
-
-                $.getJSON(url, function (result) {
-
-                    $("#currencyRate").val(result.quotes.USDLKR);
-                   
-                });
+                //type: 'post';
 
 
-            
+                //$.getJSON(url, function (result) {
+
+                //    $("#currencyRate").val(result.quotes.USDLKR);
+
+                //});
+
+
+
                 var url = 'http://octopart.com/api/v3/parts/match?';
 
                 url += '&queries=[{"mpn":"' + $("#mpn").val()+'"}]';
@@ -265,7 +265,7 @@
 
                     }
 
- 
+
 
                     $("#suppPartNo").val(dataSet1suppPartNo);
                     $("#stockqty").val(datSet1stockqty);
@@ -385,7 +385,8 @@
                             if (response.results[0].items[j].descriptions[i].attribution.sources[0].name == $("#supplier").val()) {
                                 $("#description").val(response.results[0].items[j].descriptions[i].value);
                                 var category = (response.results[0].items[j].descriptions[i].value).split(" ");
-                                findSymbol = (response.results[0].items[j].descriptions[i].value);
+                                findSymbol = (response.results[0].items[j].descriptions[i].value).toUpperCase();
+
                                 found = true;
 
                             }
@@ -399,8 +400,44 @@
 
                     if(found==false){
                         $("#description").val(response.results[0].items[0].descriptions[0].value);
+                        findSymbol = (response.results[0].items[0].descriptions[0].value).toUpperCase();
 
                     }
+
+
+                    //selecting the symbol==========================
+
+                    if (findSymbol.includes("CAP") && (findSymbol.includes("CER") || findSymbol.includes("FILM")))
+                symbolName = "cap";
+
+                    else if (findSymbol.includes("CAP") && (findSymbol.includes("TANT") || (findSymbol.includes("POLYMER")) || (findSymbol.includes("ALUM"))))
+                symbolName = "cap-pol";
+
+                    else if (findSymbol.includes("RES"))
+                symbolName = "res";
+
+                    else if (findSymbol.includes("IND"))
+                symbolName = "ind";
+
+                    else if (findSymbol.includes("FERRITE"))
+                symbolName = "bead";
+                    else if (findSymbol.includes("MOSFET N-CH"))
+                symbolName = "mosfet-n";
+                    else if (findSymbol.includes("MOSFET P-CH"))
+                symbolName = "mosfet-p";
+
+                    else if (findSymbol.includes("DIODE SCHOTTKY"))
+                symbolName = "diode-schtky";
+                    else if (findSymbol.includes("DIODE ZENER"))
+                symbolName = "diode-schtky";
+                    else if (findSymbol.includes("DIODE GEN"))
+                        symbolName = "diode";
+
+
+            else symbolName = "";
+
+
+
                     //choosing the category
 
 
@@ -448,21 +485,21 @@
 
 
 
-                
+
 
 
 
 
                     //new code for category================================================================================
-    
+
                     // -- your search query --
                     //string id = "87a44aaeb6be5c63";
-                    
-                    // print matched category items
-                       
 
-                    
-                  
+                    // print matched category items
+
+
+
+
                     //   lblCapacitance.Text = "Capacitance : ";
 
                     /*                  if ("Resistors" in catList)
@@ -479,7 +516,7 @@
                                               }
                                               document.getElementById("capacitance").label="frequency";
                                           }
-              
+
                                           else
                                               tableType = "Inductor";
                                       }
@@ -501,10 +538,10 @@
                                           tableType = "Diode";
                                       else if ("Connectors" in catList||"Cable Assemblies and Patch Cords" in catList)
                                           tableType = "Connector";
-                             
-              
-              
-              
+
+
+
+
                              */
 
 
@@ -524,7 +561,7 @@
                         }
                     }
 
-                    
+
                     if(tableFound==false){
                         for (i = 0; i < (response.results[0].items[0].category_uids).length; i++) { // separate for loop/otherwise gives tableType=inductor
                             if (response.results[0].items[0].category_uids[i] == "244ee944154dff89") {
@@ -536,7 +573,7 @@
                             }
                         }
                     }
-          
+
 
 
                     if(tableFound==false){
@@ -618,7 +655,7 @@
                             }
 
 
-                      
+
 
 
 
@@ -673,7 +710,7 @@
 
                                 break;
                             }
-                     
+
 
 
 
@@ -688,7 +725,7 @@
 
 
 
-   
+
                     //for capacitor
                     if (tableType == "Capacitor") {
                         if (response.results[0].items[0].category_uids[3] == "d820152ae1f903e7") {
@@ -741,7 +778,7 @@
                                 suppSubCategory = "PMIC - Voltage Regulators - Linear (LDO)";
 
                         }
-                   
+
 
                         else if (response.results[0].items[0].category_uids[0] == "56439b4967f48d84"){
                             if (response.results[0].items[0].category_uids[1] == "fa86378ccb3e2141")
@@ -758,9 +795,9 @@
 
 
                     if (tableType == "FPGA") {
-                    
+
                         if (response.results[0].items[0].category_uids[0] == "8436493cb5fb5ff1" && response.results[0].items[0].category_uids[1] == "f5e438eec42d2e23") {
-                           
+
                                 suppSubCategory = "Embedded - FPGAs (Field Programmable Gate Array) ";
                         }
 
@@ -953,10 +990,10 @@
                     // $("#suppSubCategory").val(compSubType);
                     //
                     $("#tab").val(tableType);
-                  
+
                     $("#suppSubCategory").val(suppSubCategory);
 
-
+                    $("#symbol").val(symbolName);
 
 
 
@@ -979,37 +1016,37 @@
                         }
                     }
 
-           
+
 
                     // check if value of box is ""
-      
+
 
 
                     /*         $("#save").click(function (event) {
-                
-                
-                
-                
-                
+
+
+
+
+
                                  if (majorError ) {
                                      alert('Please fill the compulsory data');
                                      return false;
-                
-                
+
+
                                  }
-                
+
                                  // validation code here ...
                                else  if(minorError){
-                
+
                                  return confirm('Do you really want to submit the form?');
                                  }
-                
-                
-                
+
+
+
                              });*/
                 });
 
-           
+
         });
             var blank = false;
 
@@ -1018,7 +1055,7 @@
                 if (isNaN(parseInt($("#capacitance").val())) && ($("#capacitance").val() != "") || (isNaN(parseInt($("#resistance").val())) && ($("#resistance").val() != "")) || (isNaN(parseInt($("#inductance").val())) && ($("#inductance").val() != "")) || (isNaN(parseInt($("#power").val())) && ($("#power").val() != "")) || (isNaN(parseInt($("#voltage").val())) && ($("#voltage").val() != "")) || (isNaN(parseInt($("#current").val())) && ($("#current").val() != ""))) {
                         alert("some spec value does not have numbers.Recheck");
                 return false;
-            }   
+            }
                 if ($("#mpn").val() == "" || $("#tab").val() == "" || $("#description").val() == "" ) {
                     alert("Check the following fields.Cannot be EMPTY\n* Manufacturer part number\n* Table\n* Description");
                     return false;
@@ -1057,7 +1094,7 @@
 </head>
 
 
-<body id="bod">
+<body id="bod" style="zoom:85%">
 
     <div id="first">
         <div class="tab">
@@ -1081,7 +1118,7 @@
 
         @using (Html.BeginForm("AddData", "FetchData", FormMethod.Post, new { id = "Form" }))
         {
-       
+
             <table style="margin-left:10px;margin-top:20px;">
                 <tbody>
 
@@ -1138,16 +1175,16 @@
 
                     <tr id="align">
                         <th></th>
-                        <td >
-                            
-                                <input id="search" style="margin-bottom:0px;" class="btn " type="button" value="Search" />
-                          <br />
+                        <td>
+
+                            <input id="search" style="margin-bottom:0px;" class="btn " type="button" value="Search" />
+                            <br />
 
 
-                                <input id="save" style="margin-bottom:30px;"   class="btn " type="submit" value="Save the data" />
+                            <input id="save" style="margin-bottom:30px;" class="btn " type="submit" value="Save the data" />
 
 
-</td>
+                        </td>
                     </tr>
 
             </table>
@@ -1266,35 +1303,35 @@
                                 </th>
 
                                 <td>
-                                 
-                                      
-                                            @Html.TextBox("tab", null, new { @class = "form-control in" })
-                                           
-                                            <select id="dropdown">
-                                                <option value="">Choose table</option>
-                                                <option value="Audio">Audio</option>
-                                                <option value="Battery">Battery</option>
-                                                <option value="Capacitor">Capacitor</option>
-                                                <option value="Circuit Protection">Circuit Protection</option>
-                                                <option value="Connector">Connector</option>
-                                                <option value="Diode">Diode</option>
-                                                <option value="Display">Display</option>
-                                                <option value="Filter">Filter</option>
-                                                <option value="IC">IC</option>
-                                                <option value="Inductor">Inductor</option>
-                                                <option value="Mechanical">Mechanical</option>
-                                                <option value="Oscillator">Oscillator</option>
-                                                <option value="Resistor">Resistor</option>
-                                                <option value="Switch">Switch</option>
-                                                <option value="Test Points">Test Points</option>
-                                                <option value="Transformer">Transformer</option>
-                                                <option value="Transistor">Transistor</option>
-                                          
 
-                                            </select>
-                                   
 
- 
+                                    @Html.TextBox("tab", null, new { @class = "form-control in" })
+
+                                    <select id="dropdown">
+                                        <option value="">Choose table</option>
+                                        <option value="Audio">Audio</option>
+                                        <option value="Battery">Battery</option>
+                                        <option value="Capacitor">Capacitor</option>
+                                        <option value="Circuit Protection">Circuit Protection</option>
+                                        <option value="Connector">Connector</option>
+                                        <option value="Diode">Diode</option>
+                                        <option value="Display">Display</option>
+                                        <option value="Filter">Filter</option>
+                                        <option value="IC">IC</option>
+                                        <option value="Inductor">Inductor</option>
+                                        <option value="Mechanical">Mechanical</option>
+                                        <option value="Oscillator">Oscillator</option>
+                                        <option value="Resistor">Resistor</option>
+                                        <option value="Switch">Switch</option>
+                                        <option value="Test Points">Test Points</option>
+                                        <option value="Transformer">Transformer</option>
+                                        <option value="Transistor">Transistor</option>
+
+
+                                    </select>
+
+
+
 
                                 </td>
 
@@ -1405,14 +1442,14 @@
                 </div>
             </div>
 
-            <div class="col-sm-4" >
+            <div class="col-sm-4">
                 <div id="thirdTab">
 
                     <table class="table" style="margin-top:0px;">
                         <tbody>
 
 
-                            @Html.HiddenFor(model => model.currencyRate, new { id = "currencyRate" });
+                            @*@Html.HiddenFor(model => model.currencyRate, new { id = "currencyRate" });*@
 
 
                             <tr>
@@ -1633,9 +1670,6 @@
 
 
                             </tr>
-
-
-
                             <tr>
 
 
@@ -1646,6 +1680,24 @@
 
                                 <td>
                                     @Html.TextBox("value", null, new { @class = "form-control numeric" })
+
+                                </td>
+
+
+
+                            </tr>
+
+
+                            <tr>
+
+
+                                <th>
+                                    @Html.Label("symbol", "Symbol")
+
+                                </th>
+
+                                <td>
+                                    @Html.TextBox("symbol", null, new { @class = "form-control numeric" })
 
                                 </td>
 
@@ -1753,7 +1805,7 @@
             </div>
 
 
-  
+
 
 
         }
@@ -1802,7 +1854,8 @@ mydropdown.onchange = function () {
     </script>
 </body>
 
-@if (null != TempData["notice"]) {
+@if (null != TempData["notice"])
+{
     <script type="text/javascript">
         alert("@TempData["notice"]");
 

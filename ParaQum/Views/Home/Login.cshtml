@@ -49,12 +49,12 @@
                                 <label for="pass" class="lab">Password</label>
                                 @Html.PasswordFor(a => a.password, new { @class = "input" })
                                 @Html.ValidationMessageFor(a => a.password, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="group">
+                            </div><br>
+                            @*<div class="group">
                                 @Html.CheckBoxFor(model => model.rememberMe, new { htmlAttributes = new { @class = "check", @id = "check" } })
-                                @*<input id="check" type="checkbox" class="check" checked>*@
+                              
                                 <label for="user" class="lab"> Remember me</label>
-                            </div>
+                            </div>*@
                             <div class="group">
                                 <input type="submit" id="log" class="button" value="Sign In">
                             </div>

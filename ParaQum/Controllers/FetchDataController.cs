@@ -195,8 +195,9 @@ namespace FinalTryDemo.Controllers
 
 
         //generate symbol name
-        private string createSymbolName(string Description) {
-            string  stringDescription = Description.ToUpper();
+        private string createSymbolName(string Description)
+        {
+            string stringDescription = Description.ToUpper();
             string symbolName;
 
             if (stringDescription.Contains("CAP") && (stringDescription.Contains("CER") || stringDescription.Contains("FILM")))
@@ -228,8 +229,8 @@ namespace FinalTryDemo.Controllers
             else symbolName = "";
 
             return symbolName;
-  
-    }
+
+        }
 
 
 
@@ -415,13 +416,13 @@ namespace FinalTryDemo.Controllers
             string tab = octopart.tab;
             string partLabel = "";
             float currency = Convert.ToSingle(octopart.currencyRate);
-            string pq="";
+            string pq = "";
 
 
-            float one = Convert.ToSingle(octopart.one) * currency;
-            var ten = Convert.ToSingle(octopart.ten) * Convert.ToSingle(octopart.currencyRate);
-            var hundred = Convert.ToSingle(octopart.hundred) * Convert.ToSingle(octopart.currencyRate);
-            var thousand = Convert.ToSingle(octopart.thousand) * Convert.ToSingle(octopart.currencyRate);
+            // float one = Convert.ToSingle(octopart.one);
+            // float ten = Convert.ToSingle(octopart.ten);
+            //float hundred = Convert.ToSingle(octopart.hundred);
+            // float thousand = Convert.ToSingle(octopart.thousand);
             //we call this separately because it also changes the partNumber
             string footprint = getFootprintName(octopart.tab, remapCasepackage(octopart.package), octopart.mpn);
             string symbol = createSymbolName(octopart.description);
@@ -434,20 +435,20 @@ namespace FinalTryDemo.Controllers
 
                 OleDbCommand com1 = new OleDbCommand(cmd2, conn);
 
-               string count= "SELECT [Part Label] FROM [" + tab + "_local]";
+                string count = "SELECT [Part Label] FROM [" + tab + "_local]";
                 OleDbCommand rows = new OleDbCommand(count, conn);
                 OleDbDataAdapter da = new OleDbDataAdapter(rows);
                 System.Data.DataSet ds = new System.Data.DataSet();
 
                 da.Fill(ds);
-               
+
 
                 if (ds.Tables[0].Rows.Count == 0)
                 {
-                    if(tab=="Capacitor")
-                    pq = "PQ1000";
+                    if (tab == "Capacitor")
+                        pq = "PQ1000";
 
-                   else if (tab == "Circuit Protection")
+                    else if (tab == "Circuit Protection")
                         pq = "PQ9000";
 
                     else if (tab == "Connector")
@@ -480,7 +481,7 @@ namespace FinalTryDemo.Controllers
                     else if (tab == "Switch")
                         pq = "PQ11000";
 
-                    else if(tab == "Transistor")
+                    else if (tab == "Transistor")
                         pq = "PQ6000";
                     else if (tab == "Audio")
                         pq = "PQ12000";
@@ -490,14 +491,14 @@ namespace FinalTryDemo.Controllers
                         pq = "PQ14000";
                     else if (tab == "Transformer")
                         pq = "PQ17000";
-                   else
+                    else
                         pq = "PQ18000";
                 }
 
                 else
                     pq = (String)com1.ExecuteScalar();
 
-             
+
                 string[] pqArr = pq.Split('Q');
 
                 int pqNum = Int32.Parse(pqArr[1]);
@@ -510,7 +511,7 @@ namespace FinalTryDemo.Controllers
 
             string cmd3 = "SELECT TOP 1 [Manufacturer Part Number] FROM [" + tab + "_local] WHERE [Manufacturer Part Number] ='" + octopart.mpn + "'";
             OleDbCommand com3 = new OleDbCommand(cmd3, conn);
-                                                                                                                                                                                                                                                                                                                        
+
 
 
             string cmd1 = "insert into [" + tab + "_local]([Part Number],[Part Name],[Part Label],[Symbol],[Footprint],[Manufacturer Part Description],[Manufacturer Name],[Manufacturer Part Number],[Manufacturer Link],[Supplier Name],[Supplier Part Number],[Supplier Category],[Supplier Sub-Category],[Supplier Link],[Datasheet Link 1],[Datasheet Link 2],[Datasheet Link 3],[Datasheet Link 4],[Datasheet Link 5],[Datasheet Link 6],[Photo Link],[Value],[Resistance],[Capacitance],[Inductance],[Tolerance],[Rated Voltage],[Rated Current],[Rated Power],[Package],[Status],[Digikey Stock],[Unit Cost],[x10],[x100],[x1000],[Author]) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -553,7 +554,7 @@ namespace FinalTryDemo.Controllers
             com2.Parameters.AddWithValue("?", getNumericalValue(octopart.current));
             com2.Parameters.AddWithValue("?", getNumericalValue(octopart.power));
             com2.Parameters.AddWithValue("?", (remapCasepackage(octopart.package) == null) ? Convert.DBNull : remapCasepackage(octopart.package));
-    
+
             if (octopart.stockqty != null)
             {
                 if (Int32.Parse(octopart.stockqty) > 0)
@@ -568,10 +569,10 @@ namespace FinalTryDemo.Controllers
 
             com2.Parameters.AddWithValue("?", octopart.stockqty);
 
-            com2.Parameters.AddWithValue("?", one);
-            com2.Parameters.AddWithValue("?", ten);
-            com2.Parameters.AddWithValue("?", hundred);
-            com2.Parameters.AddWithValue("?", thousand);
+            com2.Parameters.AddWithValue("?", octopart.one);
+            com2.Parameters.AddWithValue("?", octopart.ten);
+            com2.Parameters.AddWithValue("?", octopart.hundred);
+            com2.Parameters.AddWithValue("?", octopart.thousand);
 
             com2.Parameters.AddWithValue("?", Session["userName"]);
 
@@ -582,7 +583,7 @@ namespace FinalTryDemo.Controllers
             else
             {
                 com2.ExecuteNonQuery();
-                TempData["notice"] = "successful.Added to "+tab;
+                TempData["notice"] = "successful.Added to " + tab;
             }
 
 

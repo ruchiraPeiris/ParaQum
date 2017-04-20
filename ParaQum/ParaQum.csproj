@@ -305,6 +305,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Projects\Pro_1\Design\new.txt" />
+    <Content Include="Projects\Pro_1\Files\today.txt" />
+    <Content Include="Projects\Pro_3\Design\today.txt" />
+    <Content Include="Projects\Pro_3\Files\today.txt" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -319,6 +323,7 @@
     <Content Include="Content\~%24third_bom.xlsx" />
     <Content Include="ProjectBom\second_bom.xlsx" />
     <Content Include="ProjectBom\third_bom.xlsx" />
+    <Content Include="Projects\Pro_4\Files\PQ_PNP_100_15092016.xlsx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
